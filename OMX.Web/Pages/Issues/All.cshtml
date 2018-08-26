@@ -1,0 +1,79 @@
+﻿@page
+@model OMX.Web.Pages.Issues.AllModel
+
+@{
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>All</title>
+</head>
+<body>
+    <br />
+    <h4>All Reports</h4>
+    <br />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Report[0].Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Report[0].Url)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Report[0].Date)
+                </th>
+                <th>
+                    Resolved?
+                </th>
+                <th>
+                    Author ID
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Report)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Url)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        <form method="post">
+                            @if (!item.IsResolved)
+                            {
+                                <button type="submit" class="btn btn-primary" asp-page-handler="resolve"
+                                        asp-route-id="@item.Id">
+                                    Resolve
+                                </button>
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn-success" disabled"
+                                        asp-route-id="@item.Id">
+                                    Resolved!
+                                </button>
+                            }
+                        </form>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.Id)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

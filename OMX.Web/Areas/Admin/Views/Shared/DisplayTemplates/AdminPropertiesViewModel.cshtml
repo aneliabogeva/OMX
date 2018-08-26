@@ -1,0 +1,44 @@
+﻿@model AdminPropertiesViewModel  
+
+
+<tr>
+    <td>@Model.Id</td>
+    <td>@Model.Title</td>
+    <td>@Model.User.Email</td>
+    
+
+    <td>
+        <a asp-area="" asp-controller="Properties" asp-action="Details" asp-route-id="@Model.Id"
+           class="btn btn-secondary">Details</a>
+        @if (!Model.IsApproved)
+        {
+            <a asp-area="Admin" asp-controller="Properties" asp-action="ApproveListing" asp-route-id="@Model.Id"
+               class="btn btn-primary">
+                Approve Listing
+            </a>
+        }
+
+        @if (!Model.IsFeatured)
+        {
+            <a asp-area="Admin" asp-controller="Properties" asp-action="MakeFeatured" asp-route-id="@Model.Id"
+               class="btn btn-warning">
+                Make Featured
+            </a>
+        }
+        else
+        {
+            <a asp-area="Admin" asp-controller="Properties" asp-action="RemoveFeatured" asp-route-id="@Model.Id"
+               class="btn btn-warning">
+                Remove from Featured
+            </a>
+        }
+        <a asp-area="" asp-controller="Properties" asp-action="Delete" asp-route-id="@Model.Id"
+           class="btn btn-danger">
+            Delete
+        </a>
+        <a asp-area="" asp-controller="Properties" asp-action="Edit" asp-route-id="@Model.Id"
+           class="btn btn-success">
+            Edit
+        </a>
+    </td>
+</tr>

@@ -1,0 +1,25 @@
+﻿@model IEnumerable<UsersViewModel>
+@{
+    ViewData["Title"] = "All Users";
+
+}
+
+<h2>All Users</h2>
+
+@Html.Partial("_StatusMessage", (string)ViewBag.statusMessage)
+<br />
+<div class="row">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Full Name</th>
+                <th style="text-align:center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @Html.DisplayForModel()
+        </tbody>
+    </table>
+</div>
+

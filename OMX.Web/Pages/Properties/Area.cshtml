@@ -1,0 +1,66 @@
+﻿@page "{id:int}"
+@model OMX.Web.Pages.Properties.AreaModel
+
+@{
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Area</title>
+</head>
+<body>
+    <br />
+    <h1>Properties</h1>
+    <br />
+    @if (!Model.Property.Any())
+    {
+        <h3>We have no listed properties in this area!</h3>
+        <br />
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Go back to Home</a>
+    }
+    @foreach (var property in Model.Property)
+    {
+        <div class="row">
+            <div class="col-md-2">
+                <img class="media-object" src="~/images/@property.Id/@property.ImageNames.Select(e=> e.Name).First()" width="120">
+
+                <div class="col-md-1">
+                    <br />
+                    <a asp-controller="Properties" asp-action="Details" asp-route-id="@property.Id" class="btn btn-danger">Details</a>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <p><strong>Title: </strong>@property.Title</p>
+                <p><strong>For : </strong>@property.PropertyType.ToString()</p>
+                <p><strong>Floor: </strong>@property.Floor</p>
+            </div>
+            <div class="col-md-3">
+                <p><strong>Bathrooms: </strong>@property.NumberOfBathrooms</p>
+                <p><strong>Bedrooms: </strong>@property.NumberOfBedrooms</p>
+                <p><strong>Indoor Area: </strong>@property.IndoorArea SQM</p>
+            </div>
+            <div class="col-md-3">
+                <p><strong>Outdoor Area: </strong>@property.OutdoorArea SQM</p>
+                <p>
+                    <strong>Landplot Size: </strong><span>
+                        @property.LandPlotSize SQM
+                    </span>
+                </p>
+                <p><strong>Price: </strong>@property.Price @property.Currency.ToString()</p>
+            </div>
+            <div class="col-5">
+
+            </div>
+            <div>
+                <p><i class="fas fa-location-arrow"></i><strong> @property.Address.City</strong></p>
+            </div>
+        </div>
+        <hr class="my-4">
+    }
+</body>
+</html>

@@ -1,0 +1,23 @@
+﻿@model IEnumerable<AdminPropertiesViewModel>
+@{
+    ViewData["Title"] = "All Properties";
+
+}
+<br />
+<h2>All Properties</h2>
+
+<br />
+@TempData["_Message"]
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th style="text-align:center">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @Html.DisplayForModel()
+    </tbody>
+</table>

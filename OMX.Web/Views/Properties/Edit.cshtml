@@ -1,0 +1,170 @@
+﻿@model PropertyBindingModel
+@{
+
+}
+
+<br />
+<form id="contact-form" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <h3 style="text-align:center">Edit Listing</h3>
+        <hr />
+        <br />
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="Title">Title *</label>
+                <input asp-for="Title" class="form-control">
+                <span class="text-danger" asp-validation-for="Title"></span>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label asp-for="Price">Price *</label>
+                <input asp-for="Price" class="form-control" placeholder="Specify price *">
+                <span class="text-danger" asp-validation-for="Price"></span>
+            </div>
+
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label asp-for="Currency">Currency* :</label>
+                <select class="form-control" asp-for="Currency" asp-items="Model.CurrencyTypes"></select>
+                <span class="text-danger" asp-validation-for="Currency"></span>
+
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="PropertyType">I want to : *</label>
+                <select class="form-control" asp-for="PropertyType" asp-items="Model.PropertyTypes"></select>
+                <span class="text-danger" asp-validation-for="PropertyType"></span>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="NumberOfBathrooms">Bathrooms </label>
+                <select class="form-control" asp-for="NumberOfBathrooms" asp-items="Model.Rooms"></select>
+                <span class="text-danger" asp-validation-for="NumberOfBathrooms"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="NumberOfBedrooms">Bedrooms </label>
+                <select class="form-control" asp-for="NumberOfBedrooms" asp-items="Model.Rooms"></select>
+                <span class="text-danger" asp-validation-for="NumberOfBedrooms"></span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="Floor">Floor </label>
+                <input asp-for="Floor" min="0" class="form-control">
+                <span class="text-danger" asp-validation-for="Floor"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="IndoorArea">Indoor Area SQM</label>
+                <input asp-for="IndoorArea" class="form-control" placeholder="Indoor size in SQM">
+                <span class="text-danger" asp-validation-for="IndoorArea"></span>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label>City</label>
+                <select class="form-control" asp-for="AddressId" asp-items="@(new SelectList(Model.Addresses,"Id","City"))"></select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <div class="form-group">
+                    <label asp-for="OutdoorArea">Outdoor Area SQM</label>
+                    <input asp-for="OutdoorArea" class="form-control" placeholder="Outdoor size in SQM">
+                    <span class="text-danger" asp-validation-for="OutdoorArea"></span>
+                </div>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <div class="form-group">
+                    <label asp-for="LandPlotSize">Land Plot Size</label>
+                    <input asp-for="LandPlotSize" class="form-control" placeholder="Size in SQM">
+                    <span class="text-danger" asp-validation-for="LandPlotSize"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <hr />
+        <div class="col-md-12">
+            <h3 style="text-align:center">Features</h3>
+            <hr />
+            <div class="checkbox" style="text-align:center">
+                <div class="row">
+                    @foreach (var item in Model.Features)
+                    {
+                        <div class="col-md-3">
+                            @item.Value
+                        </div>
+                        <div class="col-md-1">
+                            <input type="checkbox" name="SelectedFeatures" value="@item.Key"
+                                   @(Model.SelectedFeatures.Contains(item.Key) ? "checked" : "") />
+                        </div>
+                    }
+                </div>
+            </div>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <h3 style="text-align:center">Description</h3>
+        <hr />
+        <div class="col-md-12">
+            <div class="form-group">
+                <label asp-for="Description">Describe your Property : </label>
+                <textarea name="Description" class="form-control" rows="10" cols="10">@Model.Description</textarea>
+                <span class="text-danger"  asp-validation-for="Description"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <h3 style="text-align:center">Images</h3>
+        <hr />
+        <div class="row">
+            @for (int i = 0; i < 4; i++)
+            {
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label asp-for="Images">Upload Image</label>
+                        <input asp-for="Images">
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <input type="submit" class="btn btn-success" value="Add Property">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p class="text-muted"><strong>*</strong> These fields are required.</p>
+        </div>
+    </div>
+</form>
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+
+}
+

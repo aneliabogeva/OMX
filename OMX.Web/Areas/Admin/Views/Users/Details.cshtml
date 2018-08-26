@@ -1,0 +1,110 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+@model User
+@{
+    var user = await UserManager.FindByIdAsync(Model.Id);
+}
+
+<body>
+    <br />
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3">
+                <h4>@Model.Email</h4>
+                <ul class="nav navbar-brand">
+                    @if (await UserManager.IsInRoleAsync(user, "Moderator"))
+                    {
+                    <li>
+                        <a asp-area="Admin" asp-controller="Users" asp-action="Demote" asp-route-id="@Model.Id"
+                           >Demote to User</a>
+                    </li>
+                    }
+                    else
+                    {
+                    <li>
+                        <a asp-area="Admin" asp-controller="Users" asp-action="MakeModerator" asp-route-id="@Model.Id"
+                         >Make Moderator</a>
+                    </li>
+                    }
+                    <li>
+                        <a asp-area="Admin" asp-controller="Users" asp-action="ChangePassword" asp-route-id="@Model.Id"
+                          >Change password</a>
+                    </li>
+                    @if (!Model.IsSuspended)
+                    {
+                    <li>
+                        <a asp-area="Admin" asp-controller="Users" asp-action="Lock" asp-route-id="@Model.Id"
+                          >Suspend</a>
+                    </li>
+                    }
+                    else
+                    {
+                    <li>
+                        <a asp-area="Admin" asp-controller="Users" asp-action="Unlock" asp-route-id="@Model.Id"
+                           class="btn btn-success">Unlock</a>
+                    </li>
+                    }
+                   
+                </ul><br>
+            </div>
+
+            <div class="col-sm-9">
+                <h4><small>RECENT LISTINGS</small></h4>
+                @if (Model.Properties.Any())
+                {
+                    @foreach (var listing in Model.Properties)
+                    {
+                        <hr>
+                        <h2>@listing.Title</h2>
+                        <h5><span class="fas fa-dollar-sign"></span>  @listing.Price, Posted on: @listing.PostedOn.ToString("dd/MM/yyyy")</h5>
+                        <h5><span class="label label-primary">Description: </span></h5><br>
+                        <p> @listing.Description.Substring(0, listing.Description.Length / 2) ...</p>
+                        <br>
+                        <div class="col">
+                            @if (!listing.IsApproved)
+                            {
+                                <a asp-area="Admin" asp-controller="Properties" asp-action="ApproveListing" asp-route-id="@listing.Id"
+                                   class="btn btn-primary">
+                                    Approve Listing
+                                </a>
+                            }
+
+                            @if (!listing.IsFeatured)
+                            {
+                                <a asp-area="Admin" asp-controller="Properties" asp-action="MakeFeatured" asp-route-id="@listing.Id"
+                                   class="btn btn-warning">
+                                    Make Featured
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-area="Admin" asp-controller="Properties" asp-action="RemoveFeatured" asp-route-id="@listing.Id"
+                                   class="btn btn-warning">
+                                    Remove from Featured
+                                </a>
+                            }
+                            <a asp-area="Admin" asp-controller="Properties" asp-action="Delete" asp-route-id="@listing.Id"
+                               class="btn btn-danger">
+                                Delete
+                            </a>
+                            <a asp-area="Admin" asp-controller="Properties" asp-action="Edit" asp-route-id="@listing.Id"
+                               class="btn btn-success">
+                                Edit
+                            </a>
+                        </div>
+                    }
+
+                }
+                else
+                {
+                    <h5><span class="label label-primary">The user has no listings.</span></h5><br>
+                    <a asp-area="Admin" asp-controller="Users" asp-action="All"
+                       class="btn btn-success">
+                        Back to users area
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</body>

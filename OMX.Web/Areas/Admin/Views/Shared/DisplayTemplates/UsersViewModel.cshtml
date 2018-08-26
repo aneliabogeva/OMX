@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model UsersViewModel
+@inject UserManager<User> UserManager
+@{var user = await UserManager.FindByIdAsync(Model.Id);  }
+<tr>
+    <td>@Model.Email</td>
+    <td>@Model.FullName</td>
+
+
+    <td>
+        <a asp-area="Admin" asp-controller="Users" asp-action="Details" asp-route-id="@Model.Id"
+           class="btn btn-secondary">Details</a>
+        @if (await UserManager.IsInRoleAsync(user, "Moderator"))
+        {
+            <a asp-area="Admin" asp-controller="Users" asp-action="Demote" asp-route-id="@Model.Id"
+               class="btn btn-success">Demote to User</a>
+        }
+        else
+        {
+            <a asp-area="Admin" asp-controller="Users" asp-action="MakeModerator" asp-route-id="@Model.Id"
+               class="btn btn-primary">Make Moderator</a>
+        }
+        <a asp-area="Admin" asp-controller="Users" asp-action="ChangePassword" asp-route-id="@Model.Id"
+           class="btn btn-warning">Change password</a>
+        @if (!Model.IsSuspended)
+        {
+            <a asp-area="Admin" asp-controller="Users" asp-action="Lock" asp-route-id="@Model.Id"
+               class="btn btn-danger">Suspend</a>
+        }
+        else
+        {
+            <a asp-area="Admin" asp-controller="Users" asp-action="Unlock" asp-route-id="@Model.Id"
+               class="btn btn-success">Unlock</a>
+        }
+    </td>
+</tr>
