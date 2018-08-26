@@ -3,6 +3,7 @@
     ViewData["Title"] = "Home Page";
 }
 
+@Html.Partial("_StatusMessage", (string)ViewBag.statusMessage)
 <div class="jumbotron">
     <h1 class="display-4">Welcome to OMX!</h1>
     <p class="lead">Largest real estate platform in Bulgaria!</p>
@@ -16,35 +17,35 @@
 <hr class="my-4">
 @foreach (var property in Model)
 {
-<div class="row">
-    <div class="col-md-2">
-        <img class="media-object" src="~/images/@property.Id/@property.ImageNames.Select(e=> e.Name).First()" width="120">
+    <div class="row">
+        <div class="col-md-2">
+            <img class="media-object" src="~/images/@property.Id/@property.ImageNames.Select(e=> e.Name).First()" width="120">
 
-        <div class="col-md-1">
-            <br />
-            <a asp-controller="Properties" asp-action="Details" asp-route-id="@property.Id" class="btn btn-danger">Details</a>
+            <div class="col-md-1">
+                <br />
+                <a asp-controller="Properties" asp-action="Details" asp-route-id="@property.Id" class="btn btn-danger">Details</a>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <p><strong>Title: </strong>@property.Title</p>
+            <p><strong>For : </strong>@property.PropertyType.ToString()</p>
+            <p><strong>Floor: </strong>@property.Floor</p>
+        </div>
+        <div class="col-md-3">
+            <p><strong>Bathrooms: </strong>@property.NumberOfBathrooms</p>
+            <p><strong>Bedrooms: </strong>@property.NumberOfBedrooms</p>
+            <p><strong>Indoor Area: </strong>@property.IndoorArea SQM</p>
+        </div>
+        <div class="col-md-3">
+            <p><strong>Outdoor Area: </strong>@property.OutdoorArea SQM</p>
+            <p>
+                <strong>Landplot Size: </strong><span>
+                    @property.LandPlotSize SQM
+                </span>
+            </p>
+            <p><strong>Price: </strong>@property.Price @property.Currency.ToString()</p>
         </div>
     </div>
-    
-    <div class="col-md-3">
-        <p><strong>Title: </strong>@property.Title</p>
-        <p><strong>For : </strong>@property.PropertyType.ToString()</p>
-        <p><strong>Floor: </strong>@property.Floor</p>
-    </div>
-    <div class="col-md-3">
-        <p><strong>Bathrooms: </strong>@property.NumberOfBathrooms</p>
-        <p><strong>Bedrooms: </strong>@property.NumberOfBedrooms</p>
-        <p><strong>Indoor Area: </strong>@property.IndoorArea SQM</p>
-    </div>
-    <div class="col-md-3">
-        <p><strong>Outdoor Area: </strong>@property.OutdoorArea SQM</p>
-        <p>
-            <strong>Landplot Size: </strong><span>
-                @property.LandPlotSize SQM
-            </span>
-        </p>
-        <p><strong>Price: </strong>@property.Price @property.Currency.ToString()</p>
-    </div>
-</div>
     <hr class="my-4">
 }

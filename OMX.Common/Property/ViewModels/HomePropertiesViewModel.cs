@@ -26,7 +26,9 @@ namespace OMX.Common.Property.ViewModels
         public double? LandPlotSize { get; set; }
         public int? Floor { get; set; }
         public Address Address { get; set; }
-        public ICollection<Image> ImageNames { get; set; }
-        public ICollection<PropertyFeature> Features { get; set; }
+        public ICollection<Image> ImageNames { get; set; } = new List<Image>();
+        public ICollection<PropertyFeature> Features { get; set; } = new List<PropertyFeature>();
+        
+        public string Message { get; set; }
     }
 }

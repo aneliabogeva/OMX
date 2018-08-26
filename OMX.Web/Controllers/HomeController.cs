@@ -26,10 +26,15 @@ namespace OMX.Web.Controllers
             this.userManager = userManager;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string message = null)
         {
             var properties = this.propertyService.GetAllFeaturedProperties();
             var model = mapper.Map<ICollection<HomePropertiesViewModel>>(properties);
+            if (message != null)
+            {
+                ViewBag.statusMessage = message;
+            }
+            
 
             return View(model);
         }

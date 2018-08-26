@@ -37,7 +37,7 @@ namespace OMX.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> All(string message = null)
         {
-            var users = this.userService.GetAllUsers();
+            var users = await this.userService.GetAllUsers();
             foreach (var user in users)
             {
                 var isSuspended = await userManager.IsLockedOutAsync(user);
@@ -101,7 +101,7 @@ namespace OMX.Web.Areas.Admin.Controllers
             var resetToken = await this.userManager.GeneratePasswordResetTokenAsync(user);
             IdentityResult passwordChangeResult = await this.userManager.ResetPasswordAsync(user, resetToken, model.Password);
 
-            return RedirectToAction("All", "Users");
+            return RedirectToAction("All", "Users", new { message = $"Password for {user.Email} successfully changed!" });
         }
 
         public async Task<IActionResult> Lock(string id)

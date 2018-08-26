@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using OMX.Common.Property.BindingModels;
+using OMX.Common.Property.ViewModels;
 using OMX.Models;
 using OMX.Web.Areas.Admin.Models.ViewModels;
 using System;
@@ -16,6 +17,7 @@ namespace OMX.Web.Mapping
             this.CreateMap<PropertyBindingModel, Property>();
             //this.CreateMap<User, UsersViewModel>().ForMember(x => x.IsSuspended, opt => opt.Ignore());
             this.CreateMap<Property, PropertyBindingModel>().ForMember(x=> x.Features, x=> x.Ignore());
+            this.CreateMap<Property, HomePropertiesViewModel>().ForMember(x=> x.Message, x=> x.Ignore());
 
 
         }

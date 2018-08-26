@@ -51,6 +51,8 @@ namespace OMX.Web
                  .AddDefaultTokenProviders()
                  .AddEntityFrameworkStores<OmxDbContext>();
 
+
+
             services.AddAuthentication()
                 .AddFacebook(options =>
                 {
@@ -73,7 +75,7 @@ namespace OMX.Web
                     RequireDigit = false,
                     RequireUppercase = false,
                     RequireNonAlphanumeric = false,
-                    
+
                 };
                 //options.SignIn.RequireConfirmedEmail = true;
             });
@@ -81,8 +83,13 @@ namespace OMX.Web
             services.AddScoped<IPropertyService, PropertyService>();
             services.AddScoped<IUserService, UserService>();
             services.AddAutoMapper();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddSessionStateTempDataProvider();
-            services.AddSession(); 
+            services.AddMvc(options =>
+            {
+                options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddSessionStateTempDataProvider();
+            services.AddSession();
+
 
             services.Configure<SecurityStampValidatorOptions>(options =>
             {

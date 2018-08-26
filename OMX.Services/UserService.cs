@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OMX.Data;
 using OMX.Models;
@@ -12,13 +14,24 @@ namespace OMX.Services
 {
     public class UserService : BaseService, IUserService
     {
-        public UserService(OmxDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
+        private readonly UserManager<User> userManager;
+        public UserService(OmxDbContext dbContext, IMapper mapper, UserManager<User> userManager) : base(dbContext, mapper)
         {
+            this.userManager = userManager;
         }
 
-        public IEnumerable<User> GetAllUsers()
+        public async Task<IEnumerable<User>> GetAllUsers()
         {
-            var users = this.DbContext.Users.ToList();
+            var users = new List<User>();
+
+            foreach (var user in this.DbContext.Users)
+            {
+                var isAdmin = await this.userManager.IsInRoleAsync(user, "Administrator");
+                if (!isAdmin)
+                {
+                    users.Add(user);
+                }
+            }
 
             return users;
 
@@ -27,6 +40,14 @@ namespace OMX.Services
         {
             var user = DbContext.Users
                 .Include(e=> e.Properties).FirstOrDefault(e=> e.Id == id);
+
+            return user;
+
+        }
+        public User GetUserByEmail(string email)
+        {
+            var user = DbContext.Users
+                .Include(e => e.Properties).FirstOrDefault(e => e.Email == email);
 
             return user;
 

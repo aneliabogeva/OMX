@@ -68,6 +68,45 @@ namespace OMX.Services
             return property;
 
         }
+        public void EditProperty(int id, PropertyBindingModel model)
+        {
+            var property = this.GetPropertyById(id);
+
+
+            property.Title = model.Title;
+            property.Price = model.Price;
+            property.NumberOfBathrooms = model.NumberOfBathrooms;
+            property.NumberOfBedrooms = model.NumberOfBedrooms;
+            property.OutdoorArea = model.OutdoorArea;
+            property.Description = model.Description;
+            property.IndoorArea = model.IndoorArea;
+            property.LandPlotSize = model.LandPlotSize;
+            property.OutdoorArea = model.OutdoorArea;
+            property.Floor = model.Floor;
+            property.Currency = model.Currency;
+            property.AddressId = model.AddressId;
+            property.PropertyType = model.PropertyType;
+
+
+            if (model.SelectedFeatures.Any())
+            {
+                foreach (var featureId in model.SelectedFeatures)
+                {
+                    AddFeaturesToProperty(property, featureId);
+                }
+            }
+
+            if (model.Images.Any())
+            {
+                DeletePropertyImages(property.Id);
+                property.ImageNames.Clear();
+                DbContext.SaveChanges();
+                AddImagesToProperty(model, property);
+            }
+
+            this.DbContext.SaveChanges();
+        }
+
 
         public ICollection<Property> GetAllProperties()
         {
@@ -108,6 +147,7 @@ namespace OMX.Services
                 .Include(e => e.Features)
                 .Include(e => e.ImageNames)
                 .Include(e => e.Address)
+                .Include(e=> e.User)
                 .FirstOrDefault(e => e.Id == id);
 
             var features = this.DbContext.Features;
@@ -120,42 +160,7 @@ namespace OMX.Services
 
             return property;
         }
-        public void EditProperty(int id, PropertyBindingModel model)
-        {
-            var property = this.GetPropertyById(id);
-
-
-            property.Title = model.Title;
-            property.Price = model.Price;
-            property.NumberOfBathrooms = model.NumberOfBathrooms;
-            property.NumberOfBedrooms = model.NumberOfBedrooms;
-            property.OutdoorArea = model.OutdoorArea;
-            property.Description = model.Description;
-            property.IndoorArea = model.IndoorArea;
-            property.LandPlotSize = model.LandPlotSize;
-            property.OutdoorArea = model.OutdoorArea;
-            property.Floor = model.Floor;
-            property.Currency = model.Currency;
-            property.AddressId = model.AddressId;
-            property.PropertyType = model.PropertyType;
-
-
-            if (model.SelectedFeatures.Any())
-            {
-                foreach (var featureId in model.SelectedFeatures)
-                {
-                    AddFeaturesToProperty(property, featureId);
-                }
-            }
-
-            if (model.Images.Any())
-            {
-                AddImagesToProperty(model, property);
-            }
-
-            this.DbContext.SaveChanges();
-        }
-
+        
         public void DeletePropertyById(int id)
         {
             var property = this.GetPropertyById(id);
