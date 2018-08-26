@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OMX.Data.Migrations
 {
-    public partial class initialDb : Migration
+    public partial class InitialDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,8 +14,7 @@ namespace OMX.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    City = table.Column<string>(nullable: true),
-                    Location = table.Column<string>(nullable: true)
+                    City = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -55,7 +54,8 @@ namespace OMX.Data.Migrations
                     SecurityStamp = table.Column<string>(nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
-                    FullName = table.Column<string>(nullable: false)
+                    FullName = table.Column<string>(nullable: false),
+                    IsSuspended = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -190,6 +190,7 @@ namespace OMX.Data.Migrations
                     Price = table.Column<decimal>(nullable: false),
                     Title = table.Column<string>(maxLength: 100, nullable: false),
                     PropertyType = table.Column<int>(nullable: false),
+                    AddressId = table.Column<int>(nullable: false),
                     Currency = table.Column<int>(nullable: false),
                     IsApproved = table.Column<bool>(nullable: false),
                     NumberOfBathrooms = table.Column<int>(nullable: false),
@@ -201,7 +202,7 @@ namespace OMX.Data.Migrations
                     OutdoorArea = table.Column<double>(nullable: true),
                     LandPlotSize = table.Column<double>(nullable: true),
                     Floor = table.Column<int>(nullable: true),
-                    AddressId = table.Column<int>(nullable: true)
+                    PostedOn = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -211,9 +212,32 @@ namespace OMX.Data.Migrations
                         column: x => x.AddressId,
                         principalTable: "Addresses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Properties_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reports",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Description = table.Column<string>(nullable: false),
+                    Url = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false),
+                    IsResolved = table.Column<bool>(nullable: false),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reports_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -322,6 +346,11 @@ namespace OMX.Data.Migrations
                 name: "IX_PropertiesFeatures_PropertyId",
                 table: "PropertiesFeatures",
                 column: "PropertyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reports_UserId",
+                table: "Reports",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -346,6 +375,9 @@ namespace OMX.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "PropertiesFeatures");
+
+            migrationBuilder.DropTable(
+                name: "Reports");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

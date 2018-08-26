@@ -106,16 +106,14 @@ namespace OMX.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Lock(string id)
         {
-            this.TempData["_Message"] = @"<div class=""alert alert-primary"" role=""alert"">
-  User has been locked out successfully!
-</ div > ";
+            
             var user = this.userService.GetUserById(id);
 
             await userManager.SetLockoutEnabledAsync(user, true);
             await userManager.SetLockoutEndDateAsync(user, DateTime.Today.AddYears(100));
             await userManager.UpdateSecurityStampAsync(user);
 
-            return RedirectToAction("All", "Users");
+            return RedirectToAction("All", "Users", new { message = SUSPENDED_MESSAGE});
         }
 
         public async Task<IActionResult> Unlock(string id)
@@ -126,7 +124,7 @@ namespace OMX.Web.Areas.Admin.Controllers
             await userManager.SetLockoutEndDateAsync(user, DateTime.UtcNow);
             await userManager.UpdateSecurityStampAsync(user);
 
-            return RedirectToAction("All", "Users");
+            return RedirectToAction("All", "Users", new { message = REACTIVATED_MESSAGE});
         }
 
         public IActionResult Details(string id)

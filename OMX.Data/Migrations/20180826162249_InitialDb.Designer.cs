@@ -10,8 +10,8 @@ using OMX.Data;
 namespace OMX.Data.Migrations
 {
     [DbContext(typeof(OmxDbContext))]
-    [Migration("20180820124200_Suspended")]
-    partial class Suspended
+    [Migration("20180826162249_InitialDb")]
+    partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -139,8 +139,6 @@ namespace OMX.Data.Migrations
 
                     b.Property<string>("City");
 
-                    b.Property<string>("Location");
-
                     b.HasKey("Id");
 
                     b.ToTable("Addresses");
@@ -182,7 +180,7 @@ namespace OMX.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AddressId");
+                    b.Property<int>("AddressId");
 
                     b.Property<int>("Currency");
 
@@ -203,6 +201,8 @@ namespace OMX.Data.Migrations
                     b.Property<int>("NumberOfBedrooms");
 
                     b.Property<double?>("OutdoorArea");
+
+                    b.Property<DateTime>("PostedOn");
 
                     b.Property<decimal>("Price");
 
@@ -234,6 +234,30 @@ namespace OMX.Data.Migrations
                     b.HasIndex("PropertyId");
 
                     b.ToTable("PropertiesFeatures");
+                });
+
+            modelBuilder.Entity("OMX.Models.Report", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.Property<bool>("IsResolved");
+
+                    b.Property<string>("Url");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reports");
                 });
 
             modelBuilder.Entity("OMX.Models.User", b =>
@@ -347,9 +371,10 @@ namespace OMX.Data.Migrations
 
             modelBuilder.Entity("OMX.Models.Property", b =>
                 {
-                    b.HasOne("OMX.Models.Address")
+                    b.HasOne("OMX.Models.Address", "Address")
                         .WithMany("Properties")
-                        .HasForeignKey("AddressId");
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("OMX.Models.User", "User")
                         .WithMany("Properties")
@@ -367,6 +392,13 @@ namespace OMX.Data.Migrations
                         .WithMany("Features")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("OMX.Models.Report", b =>
+                {
+                    b.HasOne("OMX.Models.User", "User")
+                        .WithMany("Reports")
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

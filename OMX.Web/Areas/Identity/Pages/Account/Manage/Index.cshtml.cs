@@ -143,7 +143,7 @@ namespace OMX.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Woops! Something Happened :(");
             }
 
 
@@ -157,8 +157,8 @@ namespace OMX.Web.Areas.Identity.Pages.Account.Manage
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                "Welcome to OMX!",
+                $"In order to continue using our service and post your amazing listings, please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
             StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToPage();

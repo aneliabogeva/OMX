@@ -17,7 +17,7 @@ namespace OMX.Common.Property.BindingModels
         [Required]
         [Range(typeof(decimal), ConstantValues.MinimumPriceValue, ConstantValues.MaximumPriceValue)]
         public decimal Price { get; set; }
-        [Required]
+        [Required (ErrorMessage = ConstantValues.TitleErrorMessage)]
         [MaxLength(ConstantValues.MaximumTitleLength)]
         [MinLength(ConstantValues.MinimumTitleLength)]
         public string Title { get; set; }
@@ -39,8 +39,7 @@ namespace OMX.Common.Property.BindingModels
 
         public List<SelectListItem> PropertyTypes { get; } = new List<SelectListItem>
         {
-            new SelectListItem { Value = "0", Text = "Sell" },
-            new SelectListItem { Value = "1", Text = "Rent" },
+            new SelectListItem { Value = "0", Text = "Sell" },            
             new SelectListItem { Value = "2", Text = "Buy"  },
           
         };
@@ -51,19 +50,19 @@ namespace OMX.Common.Property.BindingModels
             new SelectListItem { Value = "2", Text = "EUR"  },
 
         };
-
-        public Dictionary<int, string> Features { get; set; }
-        public List<Address> Addresses { get; set; }
+        [Required]
+        public Dictionary<int, string> Features { get; set; } = new Dictionary<int, string>();
+        public List<Address> Addresses { get; set; } = new List<Address>();
         public bool IsFeatured { get; set; } = false;
         public bool IsApproved { get; set; } = false;
-        public List<int> SelectedFeatures { get; set; }     
+        public List<int> SelectedFeatures { get; set; } = new List<int>();
         public PropertyType PropertyType { get; set; }
         [IgnoreMap]
         [DataType(DataType.Upload)]
         public List<IFormFile> Images { get; set; } = new List<IFormFile>();
         public string UserId { get; set; }
         public User User { get; set; }
-        [Required]
+        [Required(ErrorMessage = ConstantValues.DescriptionErrorMessage)]
         [MaxLength(ConstantValues.MaximumDescriptionLength)]
         [MinLength(ConstantValues.MinimumDescriptionLength)]
         public string Description { get; set; }       
@@ -71,7 +70,7 @@ namespace OMX.Common.Property.BindingModels
         public double? OutdoorArea { get; set; }
         public double? LandPlotSize { get; set; }
         public int? Floor { get; set; }
-        public ICollection<Image> ImageNames { get; set; }
+        public ICollection<Image> ImageNames { get; set; } = new List<Image>();
         public DateTime PostedOn { get; set; } = DateTime.UtcNow;
     }
 }

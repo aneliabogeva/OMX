@@ -119,12 +119,16 @@ namespace OMX.Web.Controllers
         {
             if (!this.ModelState.IsValid)
             {
+                model.Features = propertyService.GetAllFeatures().ToDictionary(x => x.Id, x => x.Name);
+                model.Addresses = propertyService.GetAllAddresses().ToList();
+                model.SelectedFeatures = propertyService.GetAllSelectedFeatures(model.Id).ToList();
+
                 return View(model);
             }
             this.propertyService.EditProperty(model.Id, model);
+            
 
-
-            return RedirectToAction("Edit", new { id = model.Id });
+            return RedirectToAction("Details", new { id = model.Id });
         }
         [HttpGet]
         public IActionResult Delete(int id)

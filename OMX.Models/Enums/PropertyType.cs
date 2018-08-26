@@ -6,8 +6,7 @@ namespace OMX.Models.Enums
 {
     public enum PropertyType
     {
-        ForSale = 0,
-        ForRent, 
-        LookingToBuy,
+        Sale = 0,        
+        Buy = 2,
     }
 }
