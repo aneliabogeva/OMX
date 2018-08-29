@@ -81,6 +81,10 @@ namespace OMX.Web.Controllers
         public IActionResult Details(int id)
         {
             var property = this.propertyService.GetPropertyById(id);
+            if (property == null)
+            {
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }
 
             var model = this.mapper.Map<HomePropertiesViewModel>(property);
 
@@ -121,29 +125,37 @@ namespace OMX.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var property = this.propertyService.GetPropertyById(id);
-            var model = this.mapper.Map<PropertyBindingModel>(property);
-            var userId = this.userManager.GetUserId(HttpContext.User);
-            var isAdmin = this.User.IsInRole("Administrator");
-            var isModerator = this.User.IsInRole("Moderator");
-
-
-            if (!isAdmin)
+            try
             {
-                if (!isModerator)
+                var property = this.propertyService.GetPropertyById(id);
+                var model = this.mapper.Map<PropertyBindingModel>(property);
+                var userId = this.userManager.GetUserId(HttpContext.User);
+                var isAdmin = this.User.IsInRole("Administrator");
+                var isModerator = this.User.IsInRole("Moderator");
+
+
+                if (!isAdmin)
                 {
-                    if (property.UserId != userId)
+                    if (!isModerator)
                     {
-                        return RedirectToAction("MyListings", "Users");
+                        if (property.UserId != userId)
+                        {
+                            return RedirectToAction("MyListings", "Users");
+                        }
                     }
                 }
+
+                model.Features = propertyService.GetAllFeatures().ToDictionary(x => x.Id, x => x.Name);
+                model.Addresses = propertyService.GetAllAddresses().ToList();
+                model.SelectedFeatures = propertyService.GetAllSelectedFeatures(id).ToList();
+
+                return View(model);
             }
+            catch (Exception)
+            {
 
-            model.Features = propertyService.GetAllFeatures().ToDictionary(x => x.Id, x => x.Name);
-            model.Addresses = propertyService.GetAllAddresses().ToList();
-            model.SelectedFeatures = propertyService.GetAllSelectedFeatures(id).ToList();
-
-            return View(model);
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }
         }
         [HttpPost]
         public IActionResult Edit(PropertyBindingModel model)
@@ -169,29 +181,37 @@ namespace OMX.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var property = this.propertyService.GetPropertyById(id);
-            var model = this.mapper.Map<HomePropertiesViewModel>(property);
-            var userId = this.userManager.GetUserId(HttpContext.User);
-            var isAdmin = this.User.IsInRole("Administrator");
-            var isModerator = this.User.IsInRole("Moderator");
-
-
-            if (!isAdmin)
+            try
             {
-                if (!isModerator)
+                var property = this.propertyService.GetPropertyById(id);
+                var model = this.mapper.Map<HomePropertiesViewModel>(property);
+                var userId = this.userManager.GetUserId(HttpContext.User);
+                var isAdmin = this.User.IsInRole("Administrator");
+                var isModerator = this.User.IsInRole("Moderator");
+
+
+                if (!isAdmin)
                 {
-                    if (property.UserId != userId)
+                    if (!isModerator)
                     {
-                        return RedirectToAction("MyListings", "Users");
+                        if (property.UserId != userId)
+                        {
+                            return RedirectToAction("MyListings", "Users");
+                        }
                     }
+
+
                 }
 
 
+
+                return View(model);
             }
-           
+            catch (Exception)
+            {
 
-
-            return View(model);
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }
         }
         [HttpPost]
         public IActionResult Delete(PropertyBindingModel model)
@@ -207,7 +227,7 @@ namespace OMX.Web.Controllers
             foreach (var image in model.Images.Take(4))
             {
 
-                if (image.ContentType=="image/JPEG")
+                if (image.ContentType=="image/jpeg")
                 {
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", $"{property.Id}");
 

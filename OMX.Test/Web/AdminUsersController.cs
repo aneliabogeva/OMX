@@ -5,6 +5,7 @@ using System.Text;
 
 namespace OMX.Test.Web
 {
+    [TestClass]
     public class AdminUsersController
     {
         [TestMethod]

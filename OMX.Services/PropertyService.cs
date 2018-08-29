@@ -90,6 +90,8 @@ namespace OMX.Services
 
             if (model.SelectedFeatures.Any())
             {
+                property.Features.Clear();
+                this.DbContext.SaveChanges();
                 foreach (var featureId in model.SelectedFeatures)
                 {
                     AddFeaturesToProperty(property, featureId);
@@ -153,10 +155,13 @@ namespace OMX.Services
 
             var features = this.DbContext.Features;
 
-            foreach (var item in property.Features)
+            if (property != null)
             {
-                var feature = features.Find(item.FeatureId);
-                item.Feature = feature;
+                foreach (var item in property.Features)
+                {
+                    var feature = features.Find(item.FeatureId);
+                    item.Feature = feature;
+                }
             }
 
             return property;
@@ -210,9 +215,7 @@ namespace OMX.Services
                 di.Delete(true);
         }
         private void AddFeaturesToProperty(Property property, int featureId)
-        {
-            property.Features.Clear();
-            DbContext.SaveChanges();
+        {          
 
             var feature = this.DbContext.Features.FirstOrDefault(e => e.Id == featureId);
             var pf = new PropertyFeature()
@@ -228,7 +231,7 @@ namespace OMX.Services
         {
             foreach (var img in model.Images)
             {
-                if (img.ContentType=="image/JPEG")
+                if (img.ContentType=="image/jpeg")
                 {
                     var imgName = img.FileName;
                     var image = new Image()

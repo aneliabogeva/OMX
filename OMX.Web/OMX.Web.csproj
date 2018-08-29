@@ -20,7 +20,6 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\BindingModels\" />
     <Folder Include="Pages\Shared\" />
-    <Folder Include="wwwroot\css\" />
   </ItemGroup>
 
   <ItemGroup>

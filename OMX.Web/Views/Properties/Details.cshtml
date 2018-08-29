@@ -45,7 +45,10 @@
     <br />
     <div class="row">
         <div class="col-12">
-            <h2 style="text-align:center">@Model.Title - <i class="fas fa-dollar-sign"> @Model.Price @Model.Currency.ToString()</i></h2>
+            <h2 style="text-align:center">@Model.Title  @if (Model.Price >0)
+	{
+                <i class="fas fa-dollar-sign"> - @Model.Price @Model.Currency.ToString()</i>
+	}</h2>
             <h4 style="text-align:center; color:green"><i class="fas fa-map-marker-alt"> Location :</i> @Model.Address.City</h4>
         </div>
     </div>

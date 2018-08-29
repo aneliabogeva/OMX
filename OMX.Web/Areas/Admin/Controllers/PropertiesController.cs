@@ -35,25 +35,58 @@ namespace OMX.Web.Areas.Admin.Controllers
 
         public IActionResult Delete(int id)
         {
-           this.propertyService.DeletePropertyById(id);
+            try
+            {
+                this.propertyService.DeletePropertyById(id);
+            }
+            catch (System.Exception)
+            {
+
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }
+           
 
             return RedirectToAction("All", "Properties", new { message = LISTING_DELETED_MESSAGE });
         }
         public IActionResult MakeFeatured(int id)
         {
-            this.propertyService.MakePropertyFeatured(id);
+            try
+            {
+                this.propertyService.MakePropertyFeatured(id);
+            }
+            catch (System.Exception)
+            {
+
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }
+            
 
             return RedirectToAction("All", "Properties", new { message = LISTING_FEATURED_MESSAGE });
         }
         public IActionResult ApproveListing(int id)
         {
-            this.propertyService.ApproveProperty(id);
+            
+            try
+            {
+                this.propertyService.ApproveProperty(id);
+            }
+            catch (System.Exception)
+            {
 
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }
             return RedirectToAction("All", "Properties", new { message = LISTING_APPROVED_MESSAGE });
         }
         public IActionResult RemoveFeatured(int id)
         {
-            this.propertyService.RemovePropertyFeatured(id);
+            try
+            {
+                this.propertyService.RemovePropertyFeatured(id);
+            }
+            catch (System.Exception)
+            {
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }            
 
             return RedirectToAction("All", "Properties", new { message = LISTING_REMOVED_FROM_FEATURED });
         }

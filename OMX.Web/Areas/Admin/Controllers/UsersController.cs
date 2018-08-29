@@ -37,25 +37,40 @@ namespace OMX.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> All(string message = null)
         {
-            var users = await this.userService.GetAllUsers();
-            foreach (var user in users)
+            try
             {
-                var isSuspended = await userManager.IsLockedOutAsync(user);
-                if (isSuspended)
+                var users = await this.userService.GetAllUsers();
+
+                foreach (var user in users)
                 {
-                    user.IsSuspended = true;
+                    var isSuspended = await userManager.IsLockedOutAsync(user);
+                    if (isSuspended)
+                    {
+                        user.IsSuspended = true;
+                    }
                 }
+                var model = this.mapper.Map<IEnumerable<UsersViewModel>>(users);
+
+
+                ViewBag.statusMessage = message;
+                return View(model);
             }
-            var model = this.mapper.Map<IEnumerable<UsersViewModel>>(users);
+            catch (Exception)
+            {
+                
+                return RedirectToAction("NotFound", "Error", new { area = "" });
 
+            }
 
-            ViewBag.statusMessage = message;
-            return View(model);
         }
 
         public async Task<IActionResult> MakeModerator(string id)
         {
             var user = this.userService.GetUserById(id);
+            if (user == null)
+            {
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }
 
             await this.userManager.AddToRoleAsync(user, "Moderator");
             await userManager.UpdateSecurityStampAsync(user);
@@ -67,6 +82,10 @@ namespace OMX.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Demote(string id)
         {
             var user = this.userService.GetUserById(id);
+            if (user == null)
+            {
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }
 
             await this.userManager.RemoveFromRoleAsync(user, "Moderator");
             await userManager.UpdateSecurityStampAsync(user);
@@ -80,6 +99,10 @@ namespace OMX.Web.Areas.Admin.Controllers
         public IActionResult ChangePassword(string id)
         {
             var user = this.userService.GetUserById(id);
+            if (user == null)
+            {
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }
             var model = new ChangePasswordBindingModel()
             {
                 User = user
@@ -96,7 +119,10 @@ namespace OMX.Web.Areas.Admin.Controllers
             {
                 return this.View(model);
             }
-
+            if (user == null)
+            {
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }
 
             var resetToken = await this.userManager.GeneratePasswordResetTokenAsync(user);
             IdentityResult passwordChangeResult = await this.userManager.ResetPasswordAsync(user, resetToken, model.Password);
@@ -106,32 +132,42 @@ namespace OMX.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Lock(string id)
         {
-            
+
             var user = this.userService.GetUserById(id);
+            if (user == null)
+            {
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }
 
             await userManager.SetLockoutEnabledAsync(user, true);
             await userManager.SetLockoutEndDateAsync(user, DateTime.Today.AddYears(100));
             await userManager.UpdateSecurityStampAsync(user);
 
-            return RedirectToAction("All", "Users", new { message = SUSPENDED_MESSAGE});
+            return RedirectToAction("All", "Users", new { message = SUSPENDED_MESSAGE });
         }
 
         public async Task<IActionResult> Unlock(string id)
         {
             var user = this.userService.GetUserById(id);
+            if (user == null)
+            {
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }
 
             await userManager.SetLockoutEnabledAsync(user, false);
             await userManager.SetLockoutEndDateAsync(user, DateTime.UtcNow);
             await userManager.UpdateSecurityStampAsync(user);
 
-            return RedirectToAction("All", "Users", new { message = REACTIVATED_MESSAGE});
+            return RedirectToAction("All", "Users", new { message = REACTIVATED_MESSAGE });
         }
 
         public IActionResult Details(string id)
         {
             var user = this.userService.GetUserById(id);
-
-
+            if (user == null)
+            {
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }
 
             return this.View(user);
         }
