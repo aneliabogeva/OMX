@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OMX.Models", "OMX.Models\OM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OMX.Services", "OMX.Services\OMX.Services.csproj", "{7F7E526C-2064-46D1-9A25-DD9ACCB22463}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OMX.Common", "OMX.Common\OMX.Common.csproj", "{7C01805F-8A03-4184-B7A9-C8590CA8A1DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OMX.Common", "OMX.Common\OMX.Common.csproj", "{7C01805F-8A03-4184-B7A9-C8590CA8A1DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OMX.Test", "OMX.Test\OMX.Test.csproj", "{0606A50B-CD8C-4AFF-B30F-1AA2A6DF44BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{7C01805F-8A03-4184-B7A9-C8590CA8A1DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C01805F-8A03-4184-B7A9-C8590CA8A1DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C01805F-8A03-4184-B7A9-C8590CA8A1DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0606A50B-CD8C-4AFF-B30F-1AA2A6DF44BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0606A50B-CD8C-4AFF-B30F-1AA2A6DF44BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0606A50B-CD8C-4AFF-B30F-1AA2A6DF44BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0606A50B-CD8C-4AFF-B30F-1AA2A6DF44BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

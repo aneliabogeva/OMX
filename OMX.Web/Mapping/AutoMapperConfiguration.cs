@@ -14,10 +14,13 @@ namespace OMX.Web.Mapping
     {
         public AutoMapperConfiguration()
         {
-            this.CreateMap<PropertyBindingModel, Property>();
-            //this.CreateMap<User, UsersViewModel>().ForMember(x => x.IsSuspended, opt => opt.Ignore());
-            this.CreateMap<Property, PropertyBindingModel>().ForMember(x=> x.Features, x=> x.Ignore());
-            this.CreateMap<Property, HomePropertiesViewModel>().ForMember(x=> x.Message, x=> x.Ignore());
+            this.CreateMap<PropertyBindingModel, Property>();  
+            
+            this.CreateMap<Property, PropertyBindingModel>()
+                .ForMember(x=> x.Features, x=> x.Ignore());
+
+            this.CreateMap<Property, HomePropertiesViewModel>()
+                .ForMember(x=> x.Message, x=> x.Ignore());
 
 
         }

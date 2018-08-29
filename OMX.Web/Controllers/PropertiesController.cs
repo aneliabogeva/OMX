@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -61,7 +62,7 @@ namespace OMX.Web.Controllers
         [HttpPost]
         public IActionResult Create(PropertyBindingModel model)
         {
-
+                                  
 
             if (!ModelState.IsValid)
             {
@@ -206,17 +207,20 @@ namespace OMX.Web.Controllers
             foreach (var image in model.Images.Take(4))
             {
 
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", $"{property.Id}");
-
-                if (!Directory.Exists(filePath))
+                if (image.ContentType=="image/JPEG")
                 {
-                    Directory.CreateDirectory(filePath);
-                }
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", $"{property.Id}");
 
-                var fileStream = new FileStream(Path.Combine(filePath, image.FileName), FileMode.Create);
-                
-                image.CopyTo(fileStream);
-                fileStream.Close();
+                    if (!Directory.Exists(filePath))
+                    {
+                        Directory.CreateDirectory(filePath);
+                    }
+
+                    var fileStream = new FileStream(Path.Combine(filePath, image.FileName), FileMode.Create);
+
+                    image.CopyTo(fileStream);
+                    fileStream.Close();
+                }
 
             }
         }

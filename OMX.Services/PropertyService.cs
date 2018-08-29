@@ -143,6 +143,7 @@ namespace OMX.Services
         }
         public Property GetPropertyById(int id)
         {
+            
             var property = this.DbContext.Properties
                 .Include(e => e.Features)
                 .Include(e => e.ImageNames)
@@ -227,14 +228,17 @@ namespace OMX.Services
         {
             foreach (var img in model.Images)
             {
-                var imgName = img.FileName;
-                var image = new Image()
+                if (img.ContentType=="image/JPEG")
                 {
-                    Name = imgName,
+                    var imgName = img.FileName;
+                    var image = new Image()
+                    {
+                        Name = imgName,
 
-                };
+                    };
 
-                property.ImageNames.Add(image);
+                    property.ImageNames.Add(image);
+                }
             }
             this.DbContext.SaveChanges();
         }
