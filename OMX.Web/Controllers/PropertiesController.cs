@@ -22,7 +22,7 @@ namespace OMX.Web.Controllers
     [Authorize]
     public class PropertiesController : Controller
     {
-        private readonly IPropertyService propertyService;     
+        private readonly IPropertyService propertyService;
         private readonly IUserService userService;
         private readonly IMapper mapper;
         private readonly UserManager<User> userManager;
@@ -62,7 +62,7 @@ namespace OMX.Web.Controllers
         [HttpPost]
         public IActionResult Create(PropertyBindingModel model)
         {
-                                  
+
 
             if (!ModelState.IsValid)
             {
@@ -92,18 +92,18 @@ namespace OMX.Web.Controllers
         }
         [HttpPost]
         public async Task<IActionResult> Details(HomePropertiesViewModel model)
-        {            
+        {
             var userEmail = this.HttpContext.User.Identity.Name;
             var isEmailVerified = this.userService.GetUserByEmail(userEmail).EmailConfirmed;
             if (!isEmailVerified)
             {
-                return this.RedirectToAction("Index", "Identity/Account/Manage", new { message= "Please verify your email address!"});
+                return this.RedirectToAction("Index", "Identity/Account/Manage", new { message = "Please verify your email address!" });
             }
             await SendMessasgeToOwner(model.Id, model.Message);
-            return this.RedirectToAction("Index","Home");
+            return this.RedirectToAction("Index", "Home");
         }
 
-        private  async Task SendMessasgeToOwner(int id, string message)
+        private async Task SendMessasgeToOwner(int id, string message)
         {
 
             var property = this.propertyService.GetPropertyById(id);
@@ -125,10 +125,16 @@ namespace OMX.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            try
-            {
+            { 
+            
                 var property = this.propertyService.GetPropertyById(id);
                 var model = this.mapper.Map<PropertyBindingModel>(property);
+
+                if (model == null || property == null)
+                {
+                    return RedirectToAction("NotFound", "Error", new { area = "" });
+                }
+
                 var userId = this.userManager.GetUserId(HttpContext.User);
                 var isAdmin = this.User.IsInRole("Administrator");
                 var isModerator = this.User.IsInRole("Moderator");
@@ -151,11 +157,7 @@ namespace OMX.Web.Controllers
 
                 return View(model);
             }
-            catch (Exception)
-            {
-
-                return RedirectToAction("NotFound", "Error", new { area = "" });
-            }
+            
         }
         [HttpPost]
         public IActionResult Edit(PropertyBindingModel model)
@@ -178,56 +180,65 @@ namespace OMX.Web.Controllers
 
             return RedirectToAction("Details", new { id = model.Id });
         }
+
+
+
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            try
+
+            var property = this.propertyService.GetPropertyById(id);
+            var model = this.mapper.Map<HomePropertiesViewModel>(property);
+
+            if (model == null || property == null)
             {
-                var property = this.propertyService.GetPropertyById(id);
-                var model = this.mapper.Map<HomePropertiesViewModel>(property);
-                var userId = this.userManager.GetUserId(HttpContext.User);
-                var isAdmin = this.User.IsInRole("Administrator");
-                var isModerator = this.User.IsInRole("Moderator");
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }
+
+            var userId = this.userManager.GetUserId(HttpContext.User);
+            var isAdmin = this.User.IsInRole("Administrator");
+            var isModerator = this.User.IsInRole("Moderator");
 
 
-                if (!isAdmin)
+            if (!isAdmin)
+            {
+                if (!isModerator)
                 {
-                    if (!isModerator)
+                    if (property.UserId != userId)
                     {
-                        if (property.UserId != userId)
-                        {
-                            return RedirectToAction("MyListings", "Users");
-                        }
+                        return RedirectToAction("MyListings", "Users");
                     }
-
-
                 }
 
 
+            }
 
-                return View(model);
+
+
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult Delete(PropertyBindingModel model)
+        {
+            try
+            {
+                this.propertyService.DeletePropertyById(model.Id);
             }
             catch (Exception)
             {
 
                 return RedirectToAction("NotFound", "Error", new { area = "" });
             }
-        }
-        [HttpPost]
-        public IActionResult Delete(PropertyBindingModel model)
-        {
-           
-            this.propertyService.DeletePropertyById(model.Id);
 
-            return RedirectToAction("Index","Home");
-        }
 
+            return RedirectToAction("Index", "Home");
+        }
         private void SaveImagesToRoot(PropertyBindingModel model, Property property)
         {
-            foreach (var image in model.Images.Take(4))
+            foreach (var image in model.Images.Take(3))
             {
 
-                if (image.ContentType=="image/jpeg")
+                if (image.ContentType == "image/jpeg")
                 {
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", $"{property.Id}");
 
@@ -245,4 +256,8 @@ namespace OMX.Web.Controllers
             }
         }
     }
+   
+    
 }
+
+

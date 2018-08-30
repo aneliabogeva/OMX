@@ -108,7 +108,7 @@ namespace OMX.Web
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error/NotFound");
                 app.UseHsts();
             }
 
