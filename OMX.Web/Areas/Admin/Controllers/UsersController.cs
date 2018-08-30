@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
@@ -8,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using OMX.Common.Property.BindingModels;
 using OMX.Data;
 using OMX.Models;
-using OMX.Services;
 using OMX.Services.Contracts;
 using OMX.Web.Areas.Admin.Models.ViewModels;
 
@@ -43,11 +41,7 @@ namespace OMX.Web.Areas.Admin.Controllers
 
                 foreach (var user in users)
                 {
-                    var isSuspended = await userManager.IsLockedOutAsync(user);
-                    if (isSuspended)
-                    {
-                        user.IsSuspended = true;
-                    }
+                    user.IsSuspended = await userManager.IsLockedOutAsync(user);
                 }
                 var model = this.mapper.Map<IEnumerable<UsersViewModel>>(users);
 
@@ -57,7 +51,7 @@ namespace OMX.Web.Areas.Admin.Controllers
             }
             catch (Exception)
             {
-                
+
                 return RedirectToAction("NotFound", "Error", new { area = "" });
 
             }
@@ -132,8 +126,8 @@ namespace OMX.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Lock(string id)
         {
-
             var user = this.userService.GetUserById(id);
+
             if (user == null)
             {
                 return RedirectToAction("NotFound", "Error", new { area = "" });
@@ -149,11 +143,12 @@ namespace OMX.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Unlock(string id)
         {
             var user = this.userService.GetUserById(id);
+
             if (user == null)
             {
                 return RedirectToAction("NotFound", "Error", new { area = "" });
             }
-
+            
             await userManager.SetLockoutEnabledAsync(user, false);
             await userManager.SetLockoutEndDateAsync(user, DateTime.UtcNow);
             await userManager.UpdateSecurityStampAsync(user);
@@ -164,6 +159,7 @@ namespace OMX.Web.Areas.Admin.Controllers
         public IActionResult Details(string id)
         {
             var user = this.userService.GetUserById(id);
+
             if (user == null)
             {
                 return RedirectToAction("NotFound", "Error", new { area = "" });

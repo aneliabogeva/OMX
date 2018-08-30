@@ -17,6 +17,10 @@ namespace OMX.Services
         private readonly UserManager<User> userManager;
         public UserService(OmxDbContext dbContext, IMapper mapper, UserManager<User> userManager) : base(dbContext, mapper)
         {
+            if (userManager == null)
+            {
+                throw new ArgumentNullException();
+            }
             this.userManager = userManager;
         }
 

@@ -26,25 +26,45 @@ namespace OMX.Web.Controllers
         private readonly IUserService userService;
         private readonly IMapper mapper;
         private readonly UserManager<User> userManager;
-        private readonly OmxDbContext dbContext;
         private readonly IConfiguration config;
 
-        public PropertiesController(IPropertyService propertyService, IUserService userService, IMapper mapper, UserManager<User> userManager, OmxDbContext dbContext, IConfiguration config)
+
+        public PropertiesController(IPropertyService propertyService, IUserService userService, IMapper mapper, UserManager<User> userManager, IConfiguration config)
         {
+            if (propertyService == null)
+            {
+                throw new ArgumentNullException();
+            }
+            if (userService == null)
+            {
+                throw new ArgumentNullException();
+            }
+            if (mapper == null)
+            {
+                throw new ArgumentNullException();
+            }
+            if (userManager == null)
+            {
+                throw new ArgumentNullException();
+            }
+            if (config == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             this.propertyService = propertyService;
             this.userService = userService;
             this.mapper = mapper;
             this.userManager = userManager;
-            this.dbContext = dbContext;
             this.config = config;
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            
-            var loggedInUser = HttpContext.User.Identity.Name;           
-            var user = dbContext.Users.FirstOrDefault(e => e.Email == loggedInUser);
+            var loggedInUser = HttpContext.User.Identity.Name;
+
+            var user = this.userService.GetUserByEmail(loggedInUser);
             if (user == null || loggedInUser == null)
             {
                 return RedirectToAction("NotFound", "Error", new { area = "" });
@@ -55,13 +75,12 @@ namespace OMX.Web.Controllers
                 return RedirectToAction("Index", "Identity/Account/Manage");
             }
 
-
             var model = new PropertyBindingModel
             {
                 Features = propertyService.GetAllFeatures().ToDictionary(x => x.Id, x => x.Name),
                 Addresses = propertyService.GetAllAddresses().ToList()
-
             };
+
             return View(model);
         }
 
@@ -75,6 +94,11 @@ namespace OMX.Web.Controllers
 
             var userId = this.userManager.GetUserId(HttpContext.User);
             var property = this.propertyService.CreateProperty(model, userId);
+
+            if (userId == null || property == null)
+            {
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }
 
             SaveImagesToRoot(model, property);
 
@@ -171,12 +195,9 @@ namespace OMX.Web.Controllers
             return RedirectToAction("Details", new { id = model.Id });
         }
 
-
-
         [HttpGet]
         public IActionResult Delete(int id)
         {
-
             var property = this.propertyService.GetPropertyById(id);
             var model = this.mapper.Map<HomePropertiesViewModel>(property);
 
@@ -189,7 +210,6 @@ namespace OMX.Web.Controllers
             var isAdmin = this.User.IsInRole("Administrator");
             var isModerator = this.User.IsInRole("Moderator");
 
-
             if (!isAdmin)
             {
                 if (!isModerator)
@@ -199,11 +219,7 @@ namespace OMX.Web.Controllers
                         return RedirectToAction("MyListings", "Users");
                     }
                 }
-
-
             }
-
-
 
             return View(model);
         }

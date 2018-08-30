@@ -18,6 +18,14 @@ namespace OMX.Web.Controllers
 
         public UsersController(UserManager<User> userManager, IPropertyService propertyService)
         {
+            if (userManager == null)
+            {
+                throw new ArgumentNullException();
+            }
+            if (propertyService == null)
+            {
+                throw new ArgumentNullException();
+            }
             this.userManager = userManager;
             this.propertyService = propertyService;
         }

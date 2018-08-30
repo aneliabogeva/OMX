@@ -21,6 +21,19 @@ namespace OMX.Web.Controllers
 
         public HomeController(IPropertyService propertyService, IMapper mapper, UserManager<User> userManager)
         {
+            if (propertyService == null)
+            {
+                throw new ArgumentNullException();
+            }
+            if (mapper == null)
+            {
+                throw new ArgumentNullException();
+            }
+            if (userManager == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             this.propertyService = propertyService;
             this.mapper = mapper;
             this.userManager = userManager;
@@ -35,7 +48,6 @@ namespace OMX.Web.Controllers
                 ViewBag.statusMessage = message;
             }
             
-
             return View(model);
         }
 

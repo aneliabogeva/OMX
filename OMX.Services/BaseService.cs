@@ -10,6 +10,15 @@ namespace OMX.Services
     {
         protected BaseService(OmxDbContext dbContext, IMapper mapper)
         {
+            if (dbContext == null)
+            {
+                throw new ArgumentNullException();
+            }
+            if (mapper == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             DbContext = dbContext;
             Mapper = mapper;
         }

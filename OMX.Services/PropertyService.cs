@@ -45,25 +45,28 @@ namespace OMX.Services
             var property = this.Mapper.Map<Property>(model);
             property.NumberOfBathrooms = model.NumberOfBathrooms;
             property.UserId = userId;
-            DbContext.Properties.Add(property);
-
-            this.DbContext.SaveChanges();
-
-            if (model.SelectedFeatures.Any())
+            using (DbContext)
             {
-                foreach (var featureId in model.SelectedFeatures)
+                DbContext.Properties.Add(property);
+
+                this.DbContext.SaveChanges();
+
+
+                if (model.SelectedFeatures.Any())
                 {
-                    AddFeaturesToProperty(property, featureId);
+                    foreach (var featureId in model.SelectedFeatures)
+                    {
+                        AddFeaturesToProperty(property, featureId);
+                    }
                 }
+
+                if (model.Images.Any())
+                {
+                    AddImagesToProperty(model, property);
+                }
+
+                this.DbContext.SaveChanges();
             }
-
-            if (model.Images.Any())
-            {
-                AddImagesToProperty(model, property);
-            }
-
-            this.DbContext.SaveChanges();
-
 
             return property;
 
@@ -71,7 +74,6 @@ namespace OMX.Services
         public void EditProperty(int id, PropertyBindingModel model)
         {
             var property = this.GetPropertyById(id);
-
 
             property.Title = model.Title;
             property.Price = model.Price;
@@ -87,7 +89,7 @@ namespace OMX.Services
             property.AddressId = model.AddressId;
             property.PropertyType = model.PropertyType;
 
-
+            
             if (model.SelectedFeatures.Any())
             {
                 property.Features.Clear();
@@ -139,10 +141,7 @@ namespace OMX.Services
             }
             return properties;
         }
-        public Feature GetFeatureById(int id)
-        {
-            return this.DbContext.Features.FirstOrDefault(e => e.Id == id);
-        }
+       
         public Property GetPropertyById(int id)
         {
             
@@ -176,8 +175,6 @@ namespace OMX.Services
 
             DbContext.SaveChanges();
         }
-
-
 
         public void MakePropertyFeatured(int id)
         {

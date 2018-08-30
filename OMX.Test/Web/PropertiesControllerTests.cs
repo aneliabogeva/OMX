@@ -38,7 +38,7 @@ namespace OMX.Test.Web
         [TestMethod]
         public void Create_Should_Return_ErrorPage_When_User_Is_Null()
         {
-            // Arrange
+            // Arrange            
 
             this.propertiesController.ControllerContext = new ControllerContext()
             {
@@ -153,9 +153,9 @@ namespace OMX.Test.Web
         [TestMethod]
         public void EditGet_Should_Return_ErrorPage_When_Property_IsNull()
         {                                          
-
+            // Arrange
             RedirectToActionResult result = (RedirectToActionResult)this.propertiesController.Edit(InvalidPropertyId);            
-
+            // Act and Assert
             Assert.AreEqual(NotFoundPage, result.ActionName);
 
         }
@@ -199,7 +199,7 @@ namespace OMX.Test.Web
             this.userManager = this.TestUserManager<User>();
             this.userService = new UserService(dbContext, mapper, userManager);
             this.mockedConfig =  new Mock<IConfiguration>();
-            this.propertiesController = new PropertiesController(propertyService, userService, mapper, userManager, dbContext, mockedConfig.Object);
+            this.propertiesController = new PropertiesController(propertyService, userService, mapper, userManager, mockedConfig.Object);
         }
         private UserManager<TUser> TestUserManager<TUser>(IUserStore<TUser> store = null) where TUser : class
         {

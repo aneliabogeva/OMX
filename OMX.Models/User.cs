@@ -13,6 +13,7 @@ namespace OMX.Models
             this.Reports = new List<Report>();
             this.IsSuspended = false;
         }
+
         [Required]
         public string FullName { get; set; }
         public bool IsSuspended { get; set; }

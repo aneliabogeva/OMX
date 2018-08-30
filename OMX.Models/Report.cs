@@ -15,7 +15,7 @@ namespace OMX.Models
         [DataType(DataType.Date)]
         public DateTime Date { get; set; } = DateTime.UtcNow;
         public bool IsResolved { get; set; } = false;
-        public User User { get; set; }
+        public User User { get; set; }       
         public string UserId { get; set; }
 
     }

@@ -7,7 +7,7 @@ using OMX.Services.Contracts;
 
 namespace OMX.Web.Areas.Admin.Controllers
 {
-    [Authorize(Roles = "Administrator,Moderator")]    
+    [Authorize(Roles = "Administrator, Moderator")]    
     [Area("Admin")]
     public class PropertiesController : Controller
     {
