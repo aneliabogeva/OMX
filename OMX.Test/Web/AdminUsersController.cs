@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OMX.Web.Areas.Admin.Controllers;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Security.Claims;
-using System.Text;
 using OMX.Test.Mocks;
 using OMX.Services;
 using OMX.Models;
