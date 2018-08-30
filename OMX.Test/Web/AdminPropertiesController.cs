@@ -2,25 +2,17 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OMX.Web.Areas.Admin.Controllers;
 using Moq;
-using System;
-using System.Collections.Generic;
 using OMX.Test.Mocks;
 using OMX.Services;
-using OMX.Models;
 using AutoMapper.Configuration;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 using AutoMapper;
 using OMX.Services.Contracts;
 using OMX.Data;
-using OMX.Common.Property.BindingModels;
 
 namespace OMX.Test.Web
 {
 
-   
+
     public class AdminPropertiesController
     {
         private const string NotFoundPage = "NotFound";

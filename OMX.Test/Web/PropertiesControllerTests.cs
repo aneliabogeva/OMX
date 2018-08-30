@@ -14,12 +14,10 @@ using OMX.Test.Mocks;
 using OMX.Web.Controllers;
 using System;
 using System.Collections.Generic;
-using FluentAssertions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using OMX.Common.Property.BindingModels;
-using System.Security.Principal;
 
 namespace OMX.Test.Web
 {
