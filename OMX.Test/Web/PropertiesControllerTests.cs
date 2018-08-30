@@ -154,8 +154,7 @@ namespace OMX.Test.Web
         }
         [TestMethod]
         public void EditGet_Should_Return_ErrorPage_When_Property_IsNull()
-        {
-                                          
+        {                                          
 
             RedirectToActionResult result = (RedirectToActionResult)this.propertiesController.Edit(InvalidPropertyId);            
 

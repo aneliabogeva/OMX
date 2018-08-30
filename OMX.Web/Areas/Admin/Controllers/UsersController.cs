@@ -119,7 +119,7 @@ namespace OMX.Web.Areas.Admin.Controllers
             {
                 return this.View(model);
             }
-            if (user == null)
+            if (user == null || model == null)
             {
                 return RedirectToAction("NotFound", "Error", new { area = "" });
             }
