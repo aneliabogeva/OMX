@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using OMX.Common.Property.BindingModels;
+using System.Security.Principal;
 
 namespace OMX.Test.Web
 {
@@ -67,6 +68,39 @@ namespace OMX.Test.Web
         public void Create_Should_Return_AccountManage_When_Email_IsNot_Confirmed()
         {
             // Arrange
+                       
+            this.dbContext.Users.Add(new User()
+            {
+                Email = "test@gmail.com",
+                UserName = "test@gmail.com",
+                EmailConfirmed = false,
+
+            });
+
+            this.dbContext.SaveChanges();
+
+            this.propertiesController.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext()
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new[]
+                    {
+                        new Claim(ClaimTypes.Email,"test@gmail.com"),
+                        new Claim(ClaimTypes.Role, "Administrator"),
+                        new Claim(ClaimTypes.Name, "test@gmail.com"),
+                    }))
+                }
+            };
+
+           
+            // Act
+
+            RedirectToActionResult result = (RedirectToActionResult)this.propertiesController.Create();
+
+            // Assert
+
+            Assert.AreEqual("Index", result.ActionName);
+
 
         }
         [TestMethod]

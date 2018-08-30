@@ -43,7 +43,7 @@ namespace OMX.Web.Controllers
         public IActionResult Create()
         {
             
-            var loggedInUser = HttpContext.User.Identity.Name;
+            var loggedInUser = HttpContext.User.Identity.Name;           
             var user = dbContext.Users.FirstOrDefault(e => e.Email == loggedInUser);
             if (user == null || loggedInUser == null)
             {
