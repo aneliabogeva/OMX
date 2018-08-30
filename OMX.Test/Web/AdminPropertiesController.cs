@@ -1,26 +1,38 @@
-﻿using AutoMapper;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace OMX.Test.Web
 {
-    [TestClass]
     public class AdminPropertiesController
     {
         [TestMethod]
-        public void AddNewListingsShouldBeForAuthorizedUsers()
+        public void Delete_Should_Return_ErrorPage_When_IdIs_Invalid()
         {
             // Arrange
-            
+
 
         }
         [TestMethod]
-        public void UsersWithUnverifiedEmailAddressShouldNotBeAbleToPostListings()
+        public void MakeFeatured_Should_Return_ErrorPage_When_IdIs_Invalid()
         {
             // Arrange
+
+
+        }
+        [TestMethod]
+        public void ApproveListing_Should_Return_ErrorPage_When_IdIs_Invalid()
+        {
+            // Arrange
+
+
+        }
+        [TestMethod]
+        public void RemoveFeatured_Should_Return_ErrorPage_When_IdIs_Invalid()
+        {
+            // Arrange
+
 
         }
     }

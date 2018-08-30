@@ -42,8 +42,14 @@ namespace OMX.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            
             var loggedInUser = HttpContext.User.Identity.Name;
             var user = dbContext.Users.FirstOrDefault(e => e.Email == loggedInUser);
+            if (user == null || loggedInUser == null)
+            {
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }
+
             if (!user.EmailConfirmed)
             {
                 return RedirectToAction("Index", "Identity/Account/Manage");
@@ -62,13 +68,10 @@ namespace OMX.Web.Controllers
         [HttpPost]
         public IActionResult Create(PropertyBindingModel model)
         {
-
-
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("Create", model);
             }
-
 
             var userId = this.userManager.GetUserId(HttpContext.User);
             var property = this.propertyService.CreateProperty(model, userId);
@@ -99,69 +102,56 @@ namespace OMX.Web.Controllers
             {
                 return this.RedirectToAction("Index", "Identity/Account/Manage", new { message = "Please verify your email address!" });
             }
+            if (model == null)
+            {
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }
             await SendMessasgeToOwner(model.Id, model.Message);
             return this.RedirectToAction("Index", "Home");
         }
 
-        private async Task SendMessasgeToOwner(int id, string message)
-        {
-
-            var property = this.propertyService.GetPropertyById(id);
-
-            var senderEmail = this.HttpContext.User.Identity.Name;
-            var receivingEmail = property.User.Email;
-
-            var apiKey = this.config.GetSection("ExternalAuth:SendGrid:ApiKey").Value;
-            var client = new SendGridClient(apiKey);
-            var from = new EmailAddress(senderEmail, senderEmail);
-            var subject = $"You have a new message from OMX - {senderEmail}";
-            var to = new EmailAddress(receivingEmail);
-            var plainTextContent = message;
-            var htmlContent = message;
-            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-            var response = await client.SendEmailAsync(msg);
-        }
 
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            { 
-            
-                var property = this.propertyService.GetPropertyById(id);
-                var model = this.mapper.Map<PropertyBindingModel>(property);
+            var property = this.propertyService.GetPropertyById(id);
+            var model = this.mapper.Map<PropertyBindingModel>(property);
 
-                if (model == null || property == null)
+            if (model == null || property == null)
+            {
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }
+
+            var userId = this.userManager.GetUserId(HttpContext.User);
+            var isAdmin = this.User.IsInRole("Administrator");
+            var isModerator = this.User.IsInRole("Moderator");
+
+
+            if (!isAdmin)
+            {
+                if (!isModerator)
                 {
-                    return RedirectToAction("NotFound", "Error", new { area = "" });
-                }
-
-                var userId = this.userManager.GetUserId(HttpContext.User);
-                var isAdmin = this.User.IsInRole("Administrator");
-                var isModerator = this.User.IsInRole("Moderator");
-
-
-                if (!isAdmin)
-                {
-                    if (!isModerator)
+                    if (property.UserId != userId)
                     {
-                        if (property.UserId != userId)
-                        {
-                            return RedirectToAction("MyListings", "Users");
-                        }
+                        return RedirectToAction("MyListings", "Users");
                     }
                 }
-
-                model.Features = propertyService.GetAllFeatures().ToDictionary(x => x.Id, x => x.Name);
-                model.Addresses = propertyService.GetAllAddresses().ToList();
-                model.SelectedFeatures = propertyService.GetAllSelectedFeatures(id).ToList();
-
-                return View(model);
             }
-            
+
+            model.Features = propertyService.GetAllFeatures().ToDictionary(x => x.Id, x => x.Name);
+            model.Addresses = propertyService.GetAllAddresses().ToList();
+            model.SelectedFeatures = propertyService.GetAllSelectedFeatures(id).ToList();
+
+            return View(model);
+
         }
         [HttpPost]
         public IActionResult Edit(PropertyBindingModel model)
         {
+            if (model == null)
+            {
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }
             if (!this.ModelState.IsValid)
             {
                 model.Features = propertyService.GetAllFeatures().ToDictionary(x => x.Id, x => x.Name);
@@ -255,9 +245,31 @@ namespace OMX.Web.Controllers
 
             }
         }
+        private async Task SendMessasgeToOwner(int id, string message)
+        {
+
+            var property = this.propertyService.GetPropertyById(id);
+            if (property == null)
+            {
+                return;
+            }
+
+            var senderEmail = this.HttpContext.User.Identity.Name;
+            var receivingEmail = property.User.Email;
+
+            var apiKey = this.config.GetSection("ExternalAuth:SendGrid:ApiKey").Value;
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress(senderEmail, senderEmail);
+            var subject = $"You have a new message from OMX - {senderEmail}";
+            var to = new EmailAddress(receivingEmail);
+            var plainTextContent = message;
+            var htmlContent = message;
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = await client.SendEmailAsync(msg);
+        }
     }
-   
-    
+
+
 }
 
 

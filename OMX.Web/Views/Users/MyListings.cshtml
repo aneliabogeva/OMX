@@ -19,9 +19,19 @@
 @foreach (var property in Model.Where(e => e.IsFeatured))
 {
     <div class="row">
-        <div class="col-md-2">
-            <img class="media-object" src="~/images/@property.Id/@property.ImageNames.Select(e=> e.Name).First()" width="120">
-        </div>
+        @if (!property.ImageNames.Any())
+        {
+            <div class="carousel-item active">
+                <img class="d-block w-100" width="300" height="500" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png">
+            </div>
+        }
+        else
+        {
+            <div class="col-md-2">
+                <img class="media-object" src="~/images/@property.Id/@property.ImageNames.Select(e=> e.Name).First()" width="120">
+            </div>    
+        }
+
 
         <div class="col-md-3">
             <p><strong>Title: </strong>@property.Title</p>
