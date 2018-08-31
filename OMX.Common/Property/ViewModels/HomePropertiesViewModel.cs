@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using OMX.Models;
+﻿using OMX.Models;
 using OMX.Models.Enums;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace OMX.Common.Property.ViewModels
 {

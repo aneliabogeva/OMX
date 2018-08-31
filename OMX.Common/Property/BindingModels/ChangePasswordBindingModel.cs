@@ -1,8 +1,5 @@
 ﻿using OMX.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace OMX.Common.Property.BindingModels
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OMX.Models;
@@ -18,14 +14,7 @@ namespace OMX.Web.Controllers
 
         public UsersController(UserManager<User> userManager, IPropertyService propertyService)
         {
-            if (userManager == null)
-            {
-                throw new ArgumentNullException();
-            }
-            if (propertyService == null)
-            {
-                throw new ArgumentNullException();
-            }
+           
             this.userManager = userManager;
             this.propertyService = propertyService;
         }

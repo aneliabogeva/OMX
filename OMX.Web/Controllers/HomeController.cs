@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,19 +18,7 @@ namespace OMX.Web.Controllers
 
         public HomeController(IPropertyService propertyService, IMapper mapper, UserManager<User> userManager)
         {
-            if (propertyService == null)
-            {
-                throw new ArgumentNullException();
-            }
-            if (mapper == null)
-            {
-                throw new ArgumentNullException();
-            }
-            if (userManager == null)
-            {
-                throw new ArgumentNullException();
-            }
-
+           
             this.propertyService = propertyService;
             this.mapper = mapper;
             this.userManager = userManager;

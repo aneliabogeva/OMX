@@ -2,11 +2,6 @@
 using OMX.Common.Property.BindingModels;
 using OMX.Common.Property.ViewModels;
 using OMX.Models;
-using OMX.Web.Areas.Admin.Models.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OMX.Web.Mapping
 {

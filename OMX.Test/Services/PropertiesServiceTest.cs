@@ -5,11 +5,9 @@ using OMX.Data;
 using OMX.Models;
 using OMX.Services;
 using OMX.Test.Mocks;
-using OMX.Web.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace OMX.Test.Services
 {

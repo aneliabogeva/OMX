@@ -1,12 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMX.Data;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace OMX.Test.Mocks
 {
-   public class MockDbContext
+    public class MockDbContext
     {
         public static OmxDbContext GetContext()
         {

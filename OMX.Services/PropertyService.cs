@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using OMX.Common.Property.BindingModels;
 using OMX.Data;
 using OMX.Models;
 using OMX.Services.Contracts;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

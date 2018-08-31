@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
 using OMX.Data;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace OMX.Services
 {
@@ -10,14 +7,7 @@ namespace OMX.Services
     {
         protected BaseService(OmxDbContext dbContext, IMapper mapper)
         {
-            if (dbContext == null)
-            {
-                throw new ArgumentNullException();
-            }
-            if (mapper == null)
-            {
-                throw new ArgumentNullException();
-            }
+
 
             DbContext = dbContext;
             Mapper = mapper;

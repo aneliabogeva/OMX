@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,9 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using OMX.Common.Property.BindingModels;
 using OMX.Common.Property.ViewModels;
-using OMX.Data;
 using OMX.Models;
-using OMX.Services;
 using OMX.Services.Contracts;
 using SendGrid;
 using SendGrid.Helpers.Mail;
@@ -27,30 +24,10 @@ namespace OMX.Web.Controllers
         private readonly IMapper mapper;
         private readonly UserManager<User> userManager;
         private readonly IConfiguration config;
-
-
+        
         public PropertiesController(IPropertyService propertyService, IUserService userService, IMapper mapper, UserManager<User> userManager, IConfiguration config)
         {
-            if (propertyService == null)
-            {
-                throw new ArgumentNullException();
-            }
-            if (userService == null)
-            {
-                throw new ArgumentNullException();
-            }
-            if (mapper == null)
-            {
-                throw new ArgumentNullException();
-            }
-            if (userManager == null)
-            {
-                throw new ArgumentNullException();
-            }
-            if (config == null)
-            {
-                throw new ArgumentNullException();
-            }
+            
 
             this.propertyService = propertyService;
             this.userService = userService;

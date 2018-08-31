@@ -1,8 +1,6 @@
 ﻿using OMX.Common.Property.BindingModels;
 using OMX.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace OMX.Services.Contracts
 {

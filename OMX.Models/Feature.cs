@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace OMX.Models
 {
-   public  class Feature
+    public  class Feature
     {
         public Feature()
         {
