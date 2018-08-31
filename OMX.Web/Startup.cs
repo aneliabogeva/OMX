@@ -28,7 +28,7 @@ namespace OMX.Web
         {
             Configuration = configuration;
         }
-
+        
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -51,19 +51,8 @@ namespace OMX.Web
                  .AddDefaultTokenProviders()
                  .AddEntityFrameworkStores<OmxDbContext>();
 
-
-
-            services.AddAuthentication()
-                .AddFacebook(options =>
-                {
-                    options.AppId = this.Configuration.GetSection("ExternalAuth:Facebook:AppId").Value;
-                    options.AppSecret = this.Configuration.GetSection("ExternalAuth:Facebook:AppSecret").Value;
-                })
-                .AddGoogle(options =>
-                {
-                    options.ClientId = this.Configuration.GetSection("ExternalAuth:Google:ClientId").Value;
-                    options.ClientSecret = this.Configuration.GetSection("ExternalAuth:Google:ClientSecret").Value;
-                });
+            // Google and Facebook
+            AddAuthentications(services);
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -77,12 +66,12 @@ namespace OMX.Web
                     RequireNonAlphanumeric = false,
 
                 };
-                //options.SignIn.RequireConfirmedEmail = true;
+
             });
-            services.AddSingleton<IEmailSender>(new SendGridEmailSender(this.Configuration.GetSection("ExternalAuth:SendGrid:ApiKey").Value));
-            services.AddScoped<IPropertyService, PropertyService>();
-            services.AddScoped<IUserService, UserService>();
+            ConfigureDependencies(services);
+
             services.AddAutoMapper();
+
             services.AddMvc(options =>
             {
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
@@ -97,6 +86,8 @@ namespace OMX.Web
                 options.ValidationInterval = TimeSpan.Zero;
             });
         }
+
+       
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -129,6 +120,27 @@ namespace OMX.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+        private void ConfigureDependencies(IServiceCollection services)
+        {
+            services.AddSingleton<IEmailSender>(new SendGridEmailSender(this.Configuration.GetSection("ExternalAuth:SendGrid:ApiKey").Value));
+            services.AddScoped<IPropertyService, PropertyService>();
+            services.AddScoped<IUserService, UserService>();
+        }
+
+        private void AddAuthentications(IServiceCollection services)
+        {
+            services.AddAuthentication()
+                            .AddFacebook(options =>
+                            {
+                                options.AppId = this.Configuration.GetSection("ExternalAuth:Facebook:AppId").Value;
+                                options.AppSecret = this.Configuration.GetSection("ExternalAuth:Facebook:AppSecret").Value;
+                            })
+                            .AddGoogle(options =>
+                            {
+                                options.ClientId = this.Configuration.GetSection("ExternalAuth:Google:ClientId").Value;
+                                options.ClientSecret = this.Configuration.GetSection("ExternalAuth:Google:ClientSecret").Value;
+                            });
         }
     }
 }
