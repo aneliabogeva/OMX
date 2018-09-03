@@ -7,6 +7,9 @@ namespace OMX.Web.Areas.Admin.Controllers
     [Authorize(Roles = "Administrator")]
     public abstract class AdminController : Controller
     {
-        
+        protected IActionResult ErrorPage()
+        {
+            return RedirectToAction("NotFound", "Error", new { area = "" });
+        }
     }
 }

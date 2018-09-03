@@ -52,7 +52,7 @@ namespace OMX.Web.Areas.Admin.Controllers
             catch (Exception)
             {
 
-                return RedirectToAction("NotFound", "Error", new { area = "" });
+               return base.ErrorPage();
 
             }
 
@@ -63,7 +63,7 @@ namespace OMX.Web.Areas.Admin.Controllers
             var user = this.userService.GetUserById(id);
             if (user == null)
             {
-                return RedirectToAction("NotFound", "Error", new { area = "" });
+                return base.ErrorPage();
             }
 
             await this.userManager.AddToRoleAsync(user, "Moderator");
@@ -78,7 +78,7 @@ namespace OMX.Web.Areas.Admin.Controllers
             var user = this.userService.GetUserById(id);
             if (user == null)
             {
-                return RedirectToAction("NotFound", "Error", new { area = "" });
+                return base.ErrorPage();
             }
 
             await this.userManager.RemoveFromRoleAsync(user, "Moderator");
@@ -95,7 +95,7 @@ namespace OMX.Web.Areas.Admin.Controllers
             var user = this.userService.GetUserById(id);
             if (user == null)
             {
-                return RedirectToAction("NotFound", "Error", new { area = "" });
+                return base.ErrorPage();
             }
             var model = new ChangePasswordBindingModel()
             {
@@ -115,7 +115,7 @@ namespace OMX.Web.Areas.Admin.Controllers
             }
             if (user == null || model == null)
             {
-                return RedirectToAction("NotFound", "Error", new { area = "" });
+                return base.ErrorPage();
             }
 
             var resetToken = await this.userManager.GeneratePasswordResetTokenAsync(user);
@@ -130,7 +130,7 @@ namespace OMX.Web.Areas.Admin.Controllers
 
             if (user == null)
             {
-                return RedirectToAction("NotFound", "Error", new { area = "" });
+                return base.ErrorPage();
             }
 
             await userManager.SetLockoutEnabledAsync(user, true);
@@ -146,7 +146,7 @@ namespace OMX.Web.Areas.Admin.Controllers
 
             if (user == null)
             {
-                return RedirectToAction("NotFound", "Error", new { area = "" });
+                return base.ErrorPage();
             }
             
             await userManager.SetLockoutEnabledAsync(user, false);
@@ -162,7 +162,7 @@ namespace OMX.Web.Areas.Admin.Controllers
 
             if (user == null)
             {
-                return RedirectToAction("NotFound", "Error", new { area = "" });
+                return base.ErrorPage();
             }
 
             return this.View(user);
