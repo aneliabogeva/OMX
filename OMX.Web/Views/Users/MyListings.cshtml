@@ -5,161 +5,48 @@
     var inactiveListingsCount = Model.Where(e => !e.IsApproved).Count();
 
 }
-
-<br />
-<h3 style="text-align:center">My Featured Listings</h3>
-<hr class="my-4">
-
-@if (featuredListingsCount == 0)
-{
-    <h5 style="text-align:center">You have no featured listings.</h5>
-    <hr class="my-4">
-}
-
-@foreach (var property in Model.Where(e => e.IsFeatured))
-{
-    <div class="row">
-        @if (!property.ImageNames.Any())
-        {
-            <div class="carousel-item active">
-                <img class="d-block w-100" width="300" height="500" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png">
-            </div>
-        }
-        else
-        {
-            <div class="col-md-2">
-                <img class="media-object" src="~/images/@property.Id/@property.ImageNames.Select(e=> e.Name).First()" width="120">
-            </div>    
-        }
-
-
-        <div class="col-md-3">
-            <p><strong>Title: </strong>@property.Title</p>
-            <p><strong>For : </strong>@property.PropertyType.ToString()</p>
-            <p><strong>Floor: </strong>@property.Floor</p>
+@Html.Partial("_HeaderSection", "My Listings")
+<section class="feature-section spad">
+    <div class="container">
+        <div class="section-title text-center">
+            <h3>My Featured Listings</h3>
+            <p>Properties displayed directly on the home page!</p>
         </div>
-        <div class="col-md-3">
-            <p><strong>Bathrooms: </strong>@property.NumberOfBathrooms</p>
-            <p><strong>Bedrooms: </strong>@property.NumberOfBedrooms</p>
-            <p><strong>Indoor Area: </strong>@property.IndoorArea SQM</p>
-        </div>
-        <div class="col-md-3">
-            <p><strong>Outdoor Area: </strong>@property.OutdoorArea SQM</p>
-            <p>
-                <strong>Landplot Size: </strong><span>
-                    @property.LandPlotSize SQM
-                </span>
-            </p>
-            <p><strong>Price: </strong>@property.Price @property.Currency.ToString()</p>
+        <div class="row">
+            @foreach (var property in Model.Where(e => e.IsFeatured))
+            {
+                @Html.Partial("_PropertyPartial", property)
+            }
         </div>
     </div>
-    <div class="row">
-        <div class="col-5">
-
+</section>
+<section class="feature-section spad">
+    <div class="container">
+        <div class="section-title text-center">
+            <h3>My Active Listings</h3>
+            <p>Listings approved by a moderator and active on OMX!</p>
         </div>
-        <div class="col-7">
-            <a asp-controller="Properties" asp-action="Details" asp-route-id="@property.Id" class="btn btn-primary">Details</a>
-            <a asp-controller="Properties" asp-action="Edit" asp-route-id="@property.Id" class="btn btn-success">Edit</a>
-            <a asp-controller="Properties" asp-action="Delete" asp-route-id="@property.Id" class="btn btn-danger">Delete</a>
-
-        </div>
-    </div>
-    <hr class="my-4">
-}
-<br />
-<h4 style="text-align:center">My Active Listings</h4>
-<hr class="my-4">
-
-@if (activeListingsCount == 0)
-{
-    <h5 style="text-align:center">You have no active listings.</h5>
-    <div class="row">
-        <div class="col-5">
-            
-        </div>
-        <div class="col">
-            <a asp-controller="Properties" asp-action="Create" class="btn btn-success">Create one now!</a>
+        <div class="row">
+            @foreach (var property in Model.Where(e => e.IsApproved && !e.IsFeatured))
+            {
+                @Html.Partial("_PropertyPartial", property)
+            }
         </div>
     </div>
-   
-}
-
-@foreach (var property in Model.Where(e => e.IsApproved && !e.IsFeatured))
-{
-    <div class="row">
-        <div class="col-md-2">
-            <img class="media-object" src="~/images/@property.Id/@property.ImageNames.Select(e=> e.Name).First()" width="120">
-
+</section>
+<section class="feature-section spad">
+    <div class="container">
+        <div class="section-title text-center">
+            <h3>Listings Waiting for Approval</h3>
+            <p>Please wait while our moderators are approving your listing.</p>
         </div>
-
-        <div class="col-md-3">
-            <p><strong>Title: </strong>@property.Title</p>
-            <p><strong>For : </strong>@property.PropertyType.ToString()</p>
-            <p><strong>Floor: </strong>@property.Floor</p>
-        </div>
-        <div class="col-md-3">
-            <p><strong>Bathrooms: </strong>@property.NumberOfBathrooms</p>
-            <p><strong>Bedrooms: </strong>@property.NumberOfBedrooms</p>
-            <p><strong>Indoor Area: </strong>@property.IndoorArea SQM</p>
-        </div>
-        <div class="col-md-3">
-            <p><strong>Outdoor Area: </strong>@property.OutdoorArea SQM</p>
-            <p>
-                <strong>Landplot Size: </strong><span>
-                    @property.LandPlotSize SQM
-                </span>
-            </p>
-            <p><strong>Price: </strong>@property.Price @property.Currency.ToString()</p>
+        <div class="row">
+            @foreach (var property in Model.Where(e => !e.IsApproved))
+            {
+                @Html.Partial("_PropertyPartial", property)
+            }
         </div>
     </div>
-    <div class="row">
-        <div class="col-5">
+</section>
 
-        </div>
-        <div class="col-7">
-            <a asp-controller="Properties" asp-action="Details" asp-route-id="@property.Id" class="btn btn-primary">Details</a>
-            <a asp-controller="Properties" asp-action="Edit" asp-route-id="@property.Id" class="btn btn-success">Edit</a>
-            <a asp-controller="Properties" asp-action="Delete" asp-route-id="@property.Id" class="btn btn-danger">Delete</a>
 
-        </div>
-    </div>
-    <hr class="my-4">
-}
-
-<br />
-<h4 style="text-align:center">Listings waiting for approval</h4>
-<hr class="my-4">
-@if (inactiveListingsCount == 0)
-{
-    <h5 style="text-align:center">You have no listings waiting for approval.</h5>
-}
-@foreach (var property in Model.Where(e => !e.IsApproved))
-{
-
-    <div class="row">
-        <div class="col-md-2">
-            <img class="media-object" src="~/images/@property.Id/@property.ImageNames.Select(e=> e.Name).First()" width="120">
-        </div>
-
-        <div class="col-md-3">
-            <p><strong>Title: </strong>@property.Title</p>
-            <p><strong>For : </strong>@property.PropertyType.ToString()</p>
-            <p><strong>Floor: </strong>@property.Floor</p>
-        </div>
-        <div class="col-md-3">
-            <p><strong>Bathrooms: </strong>@property.NumberOfBathrooms</p>
-            <p><strong>Bedrooms: </strong>@property.NumberOfBedrooms</p>
-            <p><strong>Indoor Area: </strong>@property.IndoorArea SQM</p>
-        </div>
-        <div class="col-md-3">
-            <p><strong>Outdoor Area: </strong>@property.OutdoorArea SQM</p>
-            <p>
-                <strong>Landplot Size: </strong><span>
-                    @property.LandPlotSize SQM
-                </span>
-            </p>
-            <p><strong>Price: </strong>@property.Price @property.Currency.ToString()</p>
-        </div>
-    </div>
-    
-}

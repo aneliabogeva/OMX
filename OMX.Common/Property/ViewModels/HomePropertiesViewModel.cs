@@ -1,6 +1,8 @@
 ﻿using OMX.Models;
 using OMX.Models.Enums;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace OMX.Common.Property.ViewModels
 {
@@ -25,6 +27,8 @@ namespace OMX.Common.Property.ViewModels
         public Address Address { get; set; }
         public ICollection<Image> ImageNames { get; set; } = new List<Image>();
         public ICollection<PropertyFeature> Features { get; set; } = new List<PropertyFeature>();
+        [DataType(DataType.Date)]
+        public DateTime PostedOn { get; set; }
 
         public string Message { get; set; }
     }

@@ -3,23 +3,27 @@
     ViewData["Title"] = "All Users";
 
 }
-
-<h2>All Users</h2>
+@Html.Partial("_HeaderSection", "User Management")
 
 @Html.Partial("_StatusMessage", (string)ViewBag.statusMessage)
-<br />
-<div class="row">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Email</th>
-                <th>Full Name</th>
-                <th style="text-align:center">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @Html.DisplayForModel()
-        </tbody>
-    </table>
-</div>
 
+<div class="limiter">
+    <div class="container-table100">
+        <div class="wrap-table100">
+            <div class="table100">
+                <table>
+                    <thead>
+                        <tr class="table100-head">
+                            <th class="column1">Email</th>
+                            <th class="column2">Name</th>
+                            <th class="column3" style="text-align:center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @Html.DisplayForModel()
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

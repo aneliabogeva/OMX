@@ -5,7 +5,9 @@
     var user = await UserManager.FindByIdAsync(Model.Id);
 }
 
-<body>
+@Html.Partial("_HeaderSection", "User Details")
+
+
     <br />
 
     <div class="container-fluid">
@@ -15,37 +17,33 @@
                 <ul class="nav navbar-brand">
                     @if (await UserManager.IsInRoleAsync(user, "Moderator"))
                     {
-                    <li>
-                        <a asp-area="Admin" asp-controller="Users" asp-action="Demote" asp-route-id="@Model.Id"
-                           >Demote to User</a>
-                    </li>
+                        <li>
+                            <a asp-area="Admin" asp-controller="Users" asp-action="Demote" asp-route-id="@Model.Id">Demote to User</a>
+                        </li>
                     }
                     else
                     {
-                    <li>
-                        <a asp-area="Admin" asp-controller="Users" asp-action="MakeModerator" asp-route-id="@Model.Id"
-                         >Make Moderator</a>
-                    </li>
+                        <li>
+                            <a asp-area="Admin" asp-controller="Users" asp-action="MakeModerator" asp-route-id="@Model.Id">Make Moderator</a>
+                        </li>
                     }
                     <li>
-                        <a asp-area="Admin" asp-controller="Users" asp-action="ChangePassword" asp-route-id="@Model.Id"
-                          >Change password</a>
+                        <a asp-area="Admin" asp-controller="Users" asp-action="ChangePassword" asp-route-id="@Model.Id">Change password</a>
                     </li>
                     @if (!Model.IsSuspended)
                     {
-                    <li>
-                        <a asp-area="Admin" asp-controller="Users" asp-action="Lock" asp-route-id="@Model.Id"
-                          >Suspend</a>
-                    </li>
+                        <li>
+                            <a asp-area="Admin" asp-controller="Users" asp-action="Lock" asp-route-id="@Model.Id">Suspend</a>
+                        </li>
                     }
                     else
                     {
-                    <li>
-                        <a asp-area="Admin" asp-controller="Users" asp-action="Unlock" asp-route-id="@Model.Id"
-                           class="btn btn-success">Unlock</a>
-                    </li>
+                        <li>
+                            <a asp-area="Admin" asp-controller="Users" asp-action="Unlock" asp-route-id="@Model.Id"
+                               class="btn btn-success">Unlock</a>
+                        </li>
                     }
-                   
+
                 </ul><br>
             </div>
 
@@ -55,6 +53,20 @@
                 {
                     @foreach (var listing in Model.Properties)
                     {
+                        <section class="feature-section spad">
+                            <div class="container">
+                                <div class="section-title text-center">
+                                    <h3>My Featured Listings</h3>
+                                    <p>Properties displayed directly on the home page!</p>
+                                </div>
+                                <div class="row">
+                                    @foreach (var property in Model.Properties)
+                                    {
+                                        @Html.Partial("_UserPropertiesPartial", property)
+                                    }
+                                </div>
+                            </div>
+                        </section>
                         <hr>
                         <h2>@listing.Title</h2>
                         <h5><span class="fas fa-dollar-sign"></span>  @listing.Price, Posted on: @listing.PostedOn.ToString("dd/MM/yyyy")</h5>
@@ -107,4 +119,4 @@
             </div>
         </div>
     </div>
-</body>
+

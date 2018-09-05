@@ -196,13 +196,9 @@ namespace OMX.Data.Migrations
 
                     b.Property<bool>("IsFeatured");
 
-                    b.Property<double?>("LandPlotSize");
-
                     b.Property<int>("NumberOfBathrooms");
 
                     b.Property<int>("NumberOfBedrooms");
-
-                    b.Property<double?>("OutdoorArea");
 
                     b.Property<DateTime>("PostedOn");
 

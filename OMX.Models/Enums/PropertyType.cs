@@ -3,6 +3,6 @@
     public enum PropertyType
     {
         Sale = 0,        
-        Buy = 2,
+        Rent = 2,
     }
 }

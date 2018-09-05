@@ -2,73 +2,81 @@
 @model OMX.Web.Pages.Properties.AreaModel
 
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
 
-<!DOCTYPE html>
+@Html.Partial("_HeaderSection", Model.Property.Select(e => e.Address.City).FirstOrDefault())
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Area</title>
-</head>
-<body>
-    <br />
-    <h1>Properties</h1>
-    <br />
-    @if (!Model.Property.Any())
-    {
-        <h3>We have no listed properties in this area!</h3>
-        <br />
-        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Go back to Home</a>
-    }
-    @foreach (var property in Model.Property)
-    {
+<br />
+
+
+
+<section class="page-section categories-page">
+    <div class="container">
         <div class="row">
-            <div class="col-md-2">
-                @if (!property.ImageNames.Any())
+            @foreach (var property in Model.Property.Where(e=> e.IsApproved))
+            {
+
+                var type = property.PropertyType;
+                var purpose = string.Empty;
+                var style = string.Empty;
+                if (type == 0)
                 {
-                    <div class="carousel-item active">
-                        <img class="d-block w-100" width="100" height="150" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png">
-                    </div>
+                    purpose = "FOR SALE";
+                    style = "sale-notic";
                 }
                 else
                 {
-                    <img class="media-object" src="~/images/@property.Id/@property.ImageNames.Select(e=> e.Name).First()" width="120">
+                    purpose = "FOR RENT";
+                    style = "rent-notic";
                 }
-                <div class="col-md-1">
-                    <br />
-                    <a asp-controller="Properties" asp-action="Details" asp-route-id="@property.Id" class="btn btn-danger">Details</a>
+                <div class="col-lg-4 col-md-6">
+                    <!-- feature -->
+                    <div class="feature-item">
+                        <div class="feature-pic set-bg" data-setbg="/images/@property.Id/@property.ImageNames.Select(e => e.Name).First()">
+                            <div class=@style>@purpose</div>
+                        </div>
+                        <div class="feature-text">
+                            <div class="text-center feature-title">
+                                <h5>@property.Title</h5>
+                                <p><i class="fa fa-map-marker"></i>@property.Address.City</p>
+                            </div>
+                            <div class="room-info-warp">
+                                <div class="room-info">
+                                    <div class="rf-left">
+                                        <p><i class="fa fa-th-large"></i>@property.IndoorArea Square foot</p>
+                                        <p><i class="fa fa-bed"></i>@property.NumberOfBedrooms Bedrooms</p>
+                                    </div>
+                                    <div class="rf-right">
+                                        <p><i class="fa fa-building"></i> @property.Floor Floor</p>
+                                        <p><i class="fa fa-bath"></i>@property.NumberOfBathrooms Bathrooms</p>
+                                    </div>
+                                </div>
+                                <div class="room-info">
+                                    <div class="rf-left">
+                                        <p><i class="fa fa-user"></i> @property.User.FullName</p>
+                                    </div>
+                                    <div class="rf-right">
+                                        <p><i class="fa fa-clock-o"></i> @property.PostedOn.ToString("dd/MM/yyyy") Posted</p>
+                                    </div>
+                                </div>
+                            </div>
+                            @if (purpose == "FOR RENT")
+                            {
+                                <a asp-controller="Properties" asp-action="Details" asp-route-id="@property.Id" class="room-price">$@property.Price/month</a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Properties" asp-action="Details" asp-route-id="@property.Id" class="room-price">$@property.Price</a>
+                            }
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <div class="col-md-3">
-                <p><strong>Title: </strong>@property.Title</p>
-                <p><strong>For : </strong>@property.PropertyType.ToString()</p>
-                <p><strong>Floor: </strong>@property.Floor</p>
-            </div>
-            <div class="col-md-3">
-                <p><strong>Bathrooms: </strong>@property.NumberOfBathrooms</p>
-                <p><strong>Bedrooms: </strong>@property.NumberOfBedrooms</p>
-                <p><strong>Indoor Area: </strong>@property.IndoorArea SQM</p>
-            </div>
-            <div class="col-md-3">
-                <p><strong>Outdoor Area: </strong>@property.OutdoorArea SQM</p>
-                <p>
-                    <strong>Landplot Size: </strong><span>
-                        @property.LandPlotSize SQM
-                    </span>
-                </p>
-                <p><strong>Price: </strong>@property.Price @property.Currency.ToString()</p>
-            </div>
-            <div class="col-5">
-
-            </div>
-            <div>
-                <p><i class="fas fa-location-arrow"></i><strong> @property.Address.City</strong></p>
-            </div>
+            }
         </div>
-        <hr class="my-4">
-    }
-</body>
-</html>
+    </div>
+</section>
+
+
+

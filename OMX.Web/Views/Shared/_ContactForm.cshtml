@@ -1,53 +1,12 @@
 ﻿@model string
 
-<form class="form form-horizontal" method="post">
-    <div asp-validation-summary="ModelOnly"></div>
-    <div class="row">
-        <div class="col-4">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-4">
-           
-        </div>
-        <div class="col-md-6">
-            <h4>Contact the owner of the ad!</h4>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-4">
 
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label class="col-md-3 right">Your Email:</label>
-                
-                <div class="col-md-9">
-                    <input class="form-control" disabled />
-                    <small>You can change it from your profile page.</small>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-4">
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label class="col-md-3 right">Your Message:</label>
-                <div class="col-md-9">
-                    <textarea rows="6" class="form-control"></textarea>
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-5">
-
-        </div>
-        <div class="col-md-6">
+    <div method="post" class="contact-form-card">
+        <h5>Would you like to contact the owner?</h5>
+        <form>            
+            <input type="text" placeholder="Your email">
+            <textarea placeholder="Your question"></textarea>
             <button type="submit">Send</button>
-        </div>
+        </form>
     </div>
-</form>
+    

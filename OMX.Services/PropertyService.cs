@@ -76,12 +76,9 @@ namespace OMX.Services
             property.Title = model.Title;
             property.Price = model.Price;
             property.NumberOfBathrooms = model.NumberOfBathrooms;
-            property.NumberOfBedrooms = model.NumberOfBedrooms;
-            property.OutdoorArea = model.OutdoorArea;
+            property.NumberOfBedrooms = model.NumberOfBedrooms;            
             property.Description = model.Description;
-            property.IndoorArea = model.IndoorArea;
-            property.LandPlotSize = model.LandPlotSize;
-            property.OutdoorArea = model.OutdoorArea;
+            property.IndoorArea = model.IndoorArea;                  
             property.Floor = model.Floor;
             property.Currency = model.Currency;
             property.AddressId = model.AddressId;
@@ -196,7 +193,11 @@ namespace OMX.Services
 
         public ICollection<Property> GetUserPropertiesById(string id)
         {
-            var properties = this.DbContext.Properties.Where(e => e.UserId == id).Include(e => e.ImageNames).ToList();
+            var properties = this.DbContext.Properties
+                .Where(e => e.UserId == id)
+                .Include(e => e.ImageNames)
+                .Include(e=> e.Address)
+                .ToList();
 
             return properties;
         }

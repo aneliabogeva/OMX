@@ -3,21 +3,35 @@
     ViewData["Title"] = "All Properties";
 
 }
-<br />
-<h2>All Properties</h2>
+<section class="page-top-section set-bg" data-setbg="/img/page-top-bg.jpg">
+    <div class="container text-white">
+        <h2>Property Management</h2>
+    </div>
+</section>
+
 @Html.Partial("_StatusMessage", (string)ViewBag.statusMessage)
-<br />
+
 @TempData["_Message"]
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th style="text-align:center">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @Html.DisplayForModel()
-    </tbody>
-</table>
+
+
+<div class="limiter">
+    <div class="container-table100">
+        <div class="wrap-table100">
+            <div class="table100">
+                <table>
+                    <thead>
+                        <tr class="table100-head">
+                            <th class="column1">Id</th>
+                            <th class="column2">Title</th>
+                            <th class="column2">Author</th>
+                            <th class="column3" style="text-align:center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @Html.DisplayForModel()
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

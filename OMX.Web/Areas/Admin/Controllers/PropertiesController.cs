@@ -42,7 +42,7 @@ namespace OMX.Web.Areas.Admin.Controllers
             catch (System.Exception)
             {
 
-                return RedirectToAction("NotFound", "Error", new { area = "" });
+                return this.ErrorPage();
             }
            
 
@@ -57,7 +57,7 @@ namespace OMX.Web.Areas.Admin.Controllers
             catch (System.Exception)
             {
 
-                return RedirectToAction("NotFound", "Error", new { area = "" });
+                return this.ErrorPage();
             }
             
 
@@ -73,7 +73,7 @@ namespace OMX.Web.Areas.Admin.Controllers
             catch (System.Exception)
             {
 
-                return RedirectToAction("NotFound", "Error", new { area = "" });
+                return this.ErrorPage();
             }
             return RedirectToAction("All", "Properties", new { message = LISTING_APPROVED_MESSAGE });
         }
@@ -85,11 +85,15 @@ namespace OMX.Web.Areas.Admin.Controllers
             }
             catch (System.Exception)
             {
-                return RedirectToAction("NotFound", "Error", new { area = "" });
+                return this.ErrorPage();
             }            
 
             return RedirectToAction("All", "Properties", new { message = LISTING_REMOVED_FROM_FEATURED });
         }
-        
+        private IActionResult ErrorPage()
+        {
+            return RedirectToAction("NotFound", "Error", new { area = "" });
+        }
+
     }
 }

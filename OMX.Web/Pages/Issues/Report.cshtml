@@ -2,50 +2,39 @@
 @model OMX.Web.Pages.Issues.ReportModel
 
 @{
-
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
+@Html.Partial("_HeaderSection", "REPORT ISSUES")
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Report</title>
-</head>
-<body>
-    <br />
-    <h4>Report an issue</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Report.Url" class="control-label">Link where the issue has been observed:</label>
-                    <input asp-for="Report.Url" class="form-control" />
-                    <span asp-validation-for="Report.Url" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Report.Date" class="control-label">When did you first encounter the issue?</label>
-                    <input asp-for="Report.Date" class="form-control" />
-                    <span asp-validation-for="Report.Date" class="text-danger"></span>
-                </div>
 
-                <div class="form-group">
-                    <label asp-for="Report.Description" class="control-label">Description of the issue</label>
-                    <textarea asp-for="Report.Description" class="form-control"></textarea>
-                    <span asp-validation-for="Report.Description" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Report!" class="btn btn-default" />
-                </div>
-            </form>
+<br />
+<form id="profileForm">
+    <fieldset>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Report.Url" class="control-label">Link where the issue has been observed:</label>
+            <input asp-for="Report.Url" class="form-control" />
+            <span asp-validation-for="Report.Url" class="text-danger"></span>
         </div>
-    </div>
+        <div class="form-group">
+            <label asp-for="Report.Date" class="control-label">When did you first encounter the issue?</label>
+            <input asp-for="Report.Date" class="form-control" />
+            <span asp-validation-for="Report.Date" class="text-danger"></span>
+        </div>
 
-    <div>
-        <a asp-page="Index">Back to Home</a>
-    </div>
+        <div class="form-group">
+            <label asp-for="Report.Description" class="control-label">Description of the issue</label>
+            <textarea asp-for="Report.Description" class="form-control"></textarea>
+            <span asp-validation-for="Report.Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Report!" class="next action-button" />
+        </div>
+        <div>
+            <a href="/" class="btn btn-link" style="color:black"><i class="fa fa-sign-in"></i> Back To Home</a>
+        </div>
+    </fieldset>
+</form>
 
-</body>
-</html>
+<br />

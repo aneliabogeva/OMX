@@ -1,67 +1,83 @@
 ﻿@model ICollection<HomePropertiesViewModel>
+
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Welcome to OMX!";
 }
 
-@Html.Partial("_StatusMessage", (string)ViewBag.statusMessage)
-<div class="jumbotron">
-    <h1 class="display-4">Welcome to OMX!</h1>
-    <p class="lead">Largest real estate platform in Bulgaria!</p>
-    <hr class="my-4">
-    <p>Below you will be able to see our featured listings!</p>
 
-</div>
-
-<br />
-<h2 style="text-align:center">Featured Listings</h2>
-<hr class="my-4">
-@foreach (var property in Model)
-{
-    <div class="row">
-        <div class="col-md-2">
-            @if (!property.ImageNames.Any())
-            {
-                <div class="carousel-item active">
-                    <img class="d-block w-100" width="100" height="150" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png">
-                </div>
-            }
-            else
-            {
-                <img class="media-object" src="~/images/@property.Id/@property.ImageNames.Select(e=> e.Name).First()" width="120">
-            }
-
-            <div class="col-md-1">
-                <br />
-                <a asp-controller="Properties" asp-action="Details" asp-route-id="@property.Id" class="btn btn-danger">Details</a>
-            </div>
+<section class="hero-section set-bg" data-setbg="img/home-background.jpg">
+    <div class="container hero-text text-white">
+        <h2>Welcome to OMX Real Estate!</h2>
+        <p>Publish your property on our portal. It's free!<br>Looking to buy a new home? Check out our featured listings!</p>
+        <a asp-area="" asp-controller="Properties" asp-action="Create" class="site-btn">ADD NEW LISTING</a>
+    </div>
+</section>
+<section class="feature-section spad">
+    <div class="container">
+        <div class="section-title text-center">
+            <h3>Featured Listings</h3>
+            <p>Browse houses and flats for sale and to rent in your area</p>
         </div>
-
-        <div class="col-md-3">
-            <p><strong>Title: </strong>@property.Title</p>
-            <p><strong>For : </strong>@property.PropertyType.ToString()</p>
-            <p><strong>Floor: </strong>@property.Floor</p>
-        </div>
-        <div class="col-md-3">
-            <p><strong>Bathrooms: </strong>@property.NumberOfBathrooms</p>
-            <p><strong>Bedrooms: </strong>@property.NumberOfBedrooms</p>
-            <p><strong>Indoor Area: </strong>@property.IndoorArea SQM</p>
-        </div>
-        <div class="col-md-3">
-            <p><strong>Outdoor Area: </strong>@property.OutdoorArea SQM</p>
-            <p>
-                <strong>Landplot Size: </strong><span>
-                    @property.LandPlotSize SQM
-                </span>
-            </p>
-            @if (property.Price == 0)
-            {
-                <p><strong>Price: </strong>Contact the owner for more information!</p>
-            }
-            else
-            {
-                <p><strong>Price: </strong>@property.Price @property.Currency.ToString()</p>
-            }
+        <div class="row">
+            @Html.DisplayForModel()
         </div>
     </div>
-    <hr class="my-4">
-}
+</section>
+<hr />
+<section class="gallery-section spad" data-setbg="img/service-bg.jpg">
+    <div class="container">
+        <div class="section-title text-center">
+            <h3>Popular Places</h3>
+            <p>We understand the value and importance of place</p>
+        </div>
+        <div class="gallery">
+            <div class="grid-sizer"></div>
+            <a href="/properties/area/3" class="gallery-item grid-long set-bg" data-setbg="img/gallery/1.jpg">
+                <div class="gi-info">
+                    <h3>Varna</h3>
+                </div>
+            </a>
+            <a href="/properties/area/1" class="gallery-item grid-wide set-bg" data-setbg="img/gallery/2.jpg">
+                <div class="gi-info">
+                    <h3>Sofia</h3>
+                </div>
+            </a>
+            <a href="/properties/area/4" class="gallery-item set-bg" data-setbg="img/gallery/3.jpg">
+                <div class="gi-info">
+                    <h3>Burgas</h3>
+                </div>
+            </a>
+            <a href="/properties/area/2" class="gallery-item set-bg" data-setbg="img/gallery/4.jpg">
+                <div class="gi-info">
+                    <h3>Plovdiv</h3>
+                </div>
+            </a>
+        </div>
+        <div class="gallery">
+            <div class="grid-sizer"></div>
+            <a href="/properties/area/3" class="gallery-item grid-long set-bg" data-setbg="img/gallery/5.jpg">
+                <div class="gi-info">
+                    <h3>Stara Zagora</h3>
+                </div>
+            </a>
+            <a href="/properties/area/1" class="gallery-item grid-wide set-bg" data-setbg="img/gallery/6.jpg">
+                <div class="gi-info">
+                    <h3>Yambol</h3>
+                </div>
+            </a>
+            <a href="/properties/area/4" class="gallery-item set-bg" data-setbg="img/gallery/7.jpg">
+                <div class="gi-info">
+                    <h3>Pleven</h3>
+                </div>
+            </a>
+            <a href="/properties/area/2" class="gallery-item set-bg" data-setbg="img/gallery/8.jpg">
+                <div class="gi-info">
+                    <h3>Ruse</h3>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+
+

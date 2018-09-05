@@ -45,9 +45,7 @@ namespace OMX.Models
         public User User { get; set; }
         [Required]
         public string Description { get; set; }
-        public double? IndoorArea { get; set; }
-        public double? OutdoorArea { get; set; }
-        public double? LandPlotSize { get; set; }
+        public double? IndoorArea { get; set; }      
         public int? Floor { get; set; }
         public DateTime PostedOn { get; set; }
         public ICollection<PropertyFeature> Features { get; set; }

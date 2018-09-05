@@ -38,7 +38,8 @@ namespace OMX.Services
         public User GetUserById(string id)
         {
             var user = DbContext.Users
-                .Include(e=> e.Properties).FirstOrDefault(e=> e.Id == id);
+                .Include(e=> e.Properties)
+                .FirstOrDefault(e=> e.Id == id);
 
             return user;
 

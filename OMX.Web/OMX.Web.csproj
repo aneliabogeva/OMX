@@ -20,6 +20,7 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\BindingModels\" />
     <Folder Include="Pages\Shared\" />
+    <Folder Include="wwwroot\img\review\New folder\" />
   </ItemGroup>
 
   <ItemGroup>

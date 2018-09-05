@@ -40,7 +40,7 @@ namespace OMX.Common.Property.BindingModels
         public List<SelectListItem> PropertyTypes { get; } = new List<SelectListItem>
         {
             new SelectListItem { Value = "0", Text = "Sell" },            
-            new SelectListItem { Value = "2", Text = "Buy"  },
+            new SelectListItem { Value = "2", Text = "Rent"  },
           
         };
         public List<SelectListItem> CurrencyTypes { get; } = new List<SelectListItem>
