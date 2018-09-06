@@ -14,20 +14,23 @@
             </span>
             <br />
             <div>
-                <form asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                    <div>
-                        <button type="submit" class="btn-login-with bg1 m-b-10" name="provider"
-                                value="@Model.ExternalLogins.First().Name" title="Log in with @Model.ExternalLogins.First().DisplayName">
-                            <i class="fa fa-facebook-official"> Login with Facebook</i>
-                        </button>
+                @if (Model.ExternalLogins != null)
+                {
+                    <form asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div>
+                            <button type="submit" class="btn-login-with bg1 m-b-10" name="provider"
+                                    value="@Model.ExternalLogins.First().Name" title="Log in with @Model.ExternalLogins.First().DisplayName">
+                                <i class="fa fa-facebook-official"> Login with Facebook</i>
+                            </button>
 
-                        <br />
-                        <button type="submit" class="btn-login-with bg2" name="provider"
-                                value="@Model.ExternalLogins.Skip(1).First().Name" title="Log in with @Model.ExternalLogins.Skip(1).First().DisplayName">
-                            <i class="fa fa-google"> Login with Google</i>
-                        </button>
-                    </div>
-                </form>
+                            <br />
+                            <button type="submit" class="btn-login-with bg2" name="provider"
+                                    value="@Model.ExternalLogins.Skip(1).First().Name" title="Log in with @Model.ExternalLogins.Skip(1).First().DisplayName">
+                                <i class="fa fa-google"> Login with Google</i>
+                            </button>
+                        </div>
+                    </form>
+                }
 
             </div>
             <br />
@@ -40,19 +43,24 @@
                 <br />
                 <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter email: ex@abc.xyz">
                     <input asp-for="Input.Email" class="input100" placeholder="Email" required />
-                    <span asp-validation-for="Input.Email" class="focus-input100"></span>
-                    <span class="focus-input100"></span>
+                    <div style="position:absolute">
+                        <span asp-validation-for="Input.Email" style="color:red"></span><br />
+                    </div>
+
                 </div>
                 <br />
-                <div class="wrap-input100 validate-input m-b-20" data-validate="Please enter password">
-                    <span class="btn-show-pass">
-                        <i class="fa fa fa-eye"></i>
-                    </span>
+
+                <br />
+                <div class="wrap-input100 validate-input m-b-20" data-validate="Please enter password">                    
                     <input asp-for="Input.Password" class="input100" placeholder="Password" required />
-                    <span asp-validation-for="Input.Password" class="focus-input100"></span>
-                    <span class="focus-input100"></span>
+                    <div style="position:absolute">
+                        <span asp-validation-for="Input.Password" style="color:red"></span><br />
+                    </div>
+
                 </div>
                 <br />
+                <br />
+
                 <div class="form-group" style="color:whitesmoke">
                     <div class="checkbox">
                         <label asp-for="Input.RememberMe">
@@ -75,6 +83,14 @@
                         Sign up now
                     </a>
                 </div>
+                <div class="flex-col-c p-t-224">
+                    <span class="txt2 p-b-10">
+                        Forgot your password?
+                    </span>
+                    <a href="/identity/account/forgotpassword" class="txt3 bo1 hov1">
+                        Reset it!
+                    </a>
+                </div>
             </form>
         </div>
     </div>
@@ -84,3 +100,5 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+

@@ -39,12 +39,14 @@ namespace OMX.Web
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+                
             });
 
             services.AddDbContext<OmxDbContext>(options =>
                options.UseSqlServer(
                    Configuration.
                    GetConnectionString("DefaultConnection")));
+            
 
             services.AddIdentity<User, IdentityRole>()
                  .AddDefaultUI()
@@ -101,6 +103,7 @@ namespace OMX.Web
             {
                 app.UseExceptionHandler("/Error/NotFound");
                 app.UseHsts();
+                
             }
 
             app.UseHttpsRedirection();

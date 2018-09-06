@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\img\review\**" />
+    <Content Remove="wwwroot\img\review\**" />
+    <EmbeddedResource Remove="wwwroot\img\review\**" />
+    <None Remove="wwwroot\img\review\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" PrivateAssets="All" />
@@ -20,7 +27,6 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\BindingModels\" />
     <Folder Include="Pages\Shared\" />
-    <Folder Include="wwwroot\img\review\New folder\" />
   </ItemGroup>
 
   <ItemGroup>
