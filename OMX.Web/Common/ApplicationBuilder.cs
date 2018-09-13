@@ -37,7 +37,7 @@ namespace SoftUniClone.Common
                 {
                     if (!await roleManager.RoleExistsAsync(role.Name))
                     {
-                        await roleManager.CreateAsync(role);
+                       await roleManager.CreateAsync(role);
                     }
 
                 }
