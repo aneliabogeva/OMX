@@ -73,6 +73,8 @@ namespace OMX.Services
         {
             var property = this.GetPropertyById(id);
 
+            property = this.Mapper.Map<Property>(model);
+
             property.Title = model.Title;
             property.Price = model.Price;
             property.NumberOfBathrooms = model.NumberOfBathrooms;
