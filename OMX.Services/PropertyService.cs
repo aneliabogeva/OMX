@@ -73,8 +73,19 @@ namespace OMX.Services
         {
             var property = this.GetPropertyById(id);
 
-            property = this.Mapper.Map<Property>(model);            
-                        
+            property.Title = model.Title;
+            property.Price = model.Price;
+            property.NumberOfBathrooms = model.NumberOfBathrooms;
+            property.NumberOfBedrooms = model.NumberOfBedrooms;            
+            property.Description = model.Description;
+            property.IndoorArea = model.IndoorArea;                  
+            property.Floor = model.Floor;
+            property.Currency = model.Currency;
+            property.AddressId = model.AddressId;
+            property.PropertyType = model.PropertyType;
+
+            //To avoid disposing the current Db connection
+            
             if (model.SelectedFeatures.Any())
             {
                 property.Features.Clear();
